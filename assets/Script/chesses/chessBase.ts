@@ -1,5 +1,6 @@
-import { _decorator, Component, Vec3, tween, animation } from 'cc';
+import { _decorator, Component, Vec3, ProgressBar, animation } from 'cc';
 const { ccclass, property } = _decorator;
+
 import chessFSM from './chessFSM';
 import { chessState } from '../Enum/chess';
 import { chessboard } from '../Chessboard/chessboard';
@@ -12,8 +13,18 @@ export class chessBase extends Component {
     // 状态机
     fsmManager: chessFSM;
 
+    // 生命值
     HP: number = 100;
-    currentHP: number = 100;
+    private _currentHP: number = 0;
+    @property(ProgressBar)
+    HPBar: ProgressBar = null;
+    set currentHP(value: number) {
+        this._currentHP = value;
+        this.HPBar.progress = value / this.HP;
+    }
+    get currentHP() {
+        return this._currentHP;
+    }
 
     // 攻击速度
     attackSpeed: number = 5;
@@ -21,8 +32,21 @@ export class chessBase extends Component {
 
     // 魔法值
     MP: number = 30;
-    currentMP: number = 0;
+    private _currentMP: number = 0;
     private MPTimer: number = 0;
+    @property(ProgressBar)
+    MPBar: ProgressBar = null;
+    get currentMP() {
+        return this._currentMP;
+    }
+    set currentMP(value: number) {
+        this._currentMP = value;
+        this.MPBar.progress = value / this.MP;
+    }
+
+    // 攻击力
+    ATK: number = 10;
+
 
     protected start(): void {
         this.init()
@@ -74,7 +98,7 @@ export class chessBase extends Component {
 
         const nodeIndex = this.node.parent.getSiblingIndex()
         const Chessboard = this.node.parent.parent.getComponent(chessboard)
-        Chessboard.findNearestTarget(nodeIndex)
+        Chessboard.attack(nodeIndex, this.ATK)
     }
 
     // 释放技能

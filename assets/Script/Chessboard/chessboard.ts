@@ -17,10 +17,13 @@ export class chessboard extends Component {
 
     }
 
-    attack() {
-        // const enemy = this.findNearestTarget()
+    attack(chessIndex: number, hurt: number) {
+        const enemy = this.findNearestTarget(chessIndex)
+        if (enemy) {
+            const chess = enemy.getComponent(chessBase)
+            chess.takeDamage(hurt)
+        }
     }
-
 
     // 寻找最近可攻击目标
     findNearestTarget(chessIndex: number): Node | null | undefined {
@@ -36,5 +39,3 @@ export class chessboard extends Component {
         return enemy
     }
 }
-
-
