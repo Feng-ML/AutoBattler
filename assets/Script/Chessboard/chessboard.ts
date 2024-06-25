@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, find } from 'cc';
+import { _decorator, Component, Node, find, Vec3, EventMouse, Input, input } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { chessBase } from '../chesses/chessBase';
@@ -17,14 +17,6 @@ export class chessboard extends Component {
 
     }
 
-    attack(chessIndex: number, hurt: number) {
-        const enemy = this.findNearestTarget(chessIndex)
-        if (enemy) {
-            const chess = enemy.getComponent(chessBase)
-            chess.takeDamage(hurt)
-        }
-    }
-
     // 寻找最近可攻击目标
     findNearestTarget(chessIndex: number): Node | null | undefined {
         let rowIndex = chessIndex % 3
@@ -33,7 +25,7 @@ export class chessboard extends Component {
         let enemy: Node = find('chess', this.enemyChessboard.children[rowIndex])
 
         if (!enemy) {
-            enemy = this.enemyChessboard.getComponentInChildren(chessBase).node
+            enemy = this.enemyChessboard.getComponentInChildren(chessBase)?.node
         }
 
         return enemy

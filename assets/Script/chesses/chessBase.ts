@@ -1,9 +1,10 @@
-import { _decorator, Component, Vec3, ProgressBar, animation } from 'cc';
+import { _decorator, Component, Vec3, ProgressBar, Input, EventMouse, input } from 'cc';
 const { ccclass, property } = _decorator;
 
 import chessFSM from './chessFSM';
-import { chessState } from '../Enum/chess';
+import { chessState, EVENT_NAME_CHESS } from '../Enum/chess';
 import { chessboard } from '../Chessboard/chessboard';
+import EventManager from '../Runtime/EventManager';
 
 
 // 棋子基类
@@ -47,9 +48,23 @@ export class chessBase extends Component {
     // 攻击力
     ATK: number = 10;
 
+    // 当前选中的棋子
+    handleChess: chessBase = null;
 
     protected start(): void {
         this.init()
+
+        // 拖拽棋子
+        this.node.on(Input.EventType.TOUCH_START, (event: EventMouse) => {
+            EventManager.emit(EVENT_NAME_CHESS.CHESS_TOUCH_START, event, this.node)
+        })
+        this.node.on(Input.EventType.TOUCH_END, (event: EventMouse) => {
+            EventManager.emit(EVENT_NAME_CHESS.CHESS_TOUCH_END, event)
+        })
+        this.node.on(Input.EventType.TOUCH_MOVE, (event: EventMouse) => {
+            const location = event.getUILocation();
+            this.node.setWorldPosition(new Vec3(location.x, location.y, 0))
+        })
     }
 
     protected update(deltaTime: number) {
@@ -61,7 +76,7 @@ export class chessBase extends Component {
         const attackInterval = 1.0 / this.attackSpeed;
         // 当累积时间足够执行一次攻击时
         if (this.attackTimer >= attackInterval) {
-            this.attack();
+            // this.attack();
             this.attackTimer -= attackInterval;
         }
 
@@ -94,20 +109,25 @@ export class chessBase extends Component {
     }
 
     attack() {
-        this.fsmManager.changeState(chessState.attack)
-
         const nodeIndex = this.node.parent.getSiblingIndex()
         const Chessboard = this.node.parent.parent.getComponent(chessboard)
-        Chessboard.attack(nodeIndex, this.ATK)
+
+        const enemy = Chessboard.findNearestTarget(nodeIndex)
+        if (enemy) {
+            this.fsmManager.changeState(chessState.attack)
+            const chess = enemy.getComponent(chessBase)
+            chess.takeDamage(this.ATK)
+        }
     }
 
     // 释放技能
     releaseSkill() {
-        this.fsmManager.changeState(chessState.skill)
+        // this.fsmManager.changeState(chessState.skill)
     }
 
     die() {
         this.fsmManager.changeState(chessState.death)
+        // this.node.destroy()
     }
 }
 

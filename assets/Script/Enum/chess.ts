@@ -6,3 +6,8 @@ export enum chessState {
   move,
   death,
 }
+
+export enum EVENT_NAME_CHESS {
+  CHESS_TOUCH_START = "CHESS_TOUCH_START",
+  CHESS_TOUCH_END = "CHESS_TOUCH_END",
+}
