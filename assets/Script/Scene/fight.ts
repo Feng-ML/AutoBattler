@@ -1,7 +1,7 @@
 import { _decorator, Component, Node, Input, Vec3, EventMouse } from 'cc';
 const { ccclass, property } = _decorator;
 
-import { chessBase } from '../chesses/chessBase';
+import { chessBase } from '../chesses/base/chessBase';
 
 @ccclass('fight')
 export class fight extends Component {

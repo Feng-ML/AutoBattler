@@ -1,6 +1,6 @@
 import { _decorator, Component, Node, Animation, AnimationState } from 'cc';
 const { ccclass, property } = _decorator;
-import { chessState } from '../Enum/chess';
+import { chessState } from '../../enum/chess';
 
 // 棋子状态机
 @ccclass('chessFSM')

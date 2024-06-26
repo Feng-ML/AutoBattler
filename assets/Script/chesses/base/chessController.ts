@@ -2,8 +2,8 @@ import { _decorator, Component, Node, instantiate, Prefab, Input, EventMouse, Ve
 const { ccclass, property } = _decorator;
 
 import { chessBase } from './chessBase';
-import EventManager from '../Runtime/EventManager';
-import { EVENT_NAME_CHESS } from '../Enum/chess';
+import EventManager from '../../runtime/EventManager';
+import { EVENT_NAME_CHESS } from '../../enum/chess';
 
 enum CHESS_LOCATION {
     board,

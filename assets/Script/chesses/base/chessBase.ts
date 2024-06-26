@@ -2,56 +2,21 @@ import { _decorator, Component, Vec3, ProgressBar, Input, EventMouse, input } fr
 const { ccclass, property } = _decorator;
 
 import chessFSM from './chessFSM';
-import { chessState, EVENT_NAME_CHESS } from '../Enum/chess';
-import { chessboard } from '../Chessboard/chessboard';
-import EventManager from '../Runtime/EventManager';
+import { chessState, EVENT_NAME_CHESS } from '../../enum/chess';
+import { chessboard } from '../../chessboard/chessboard';
+import { chessAttr } from './chessAttr';
+import EventManager from '../../runtime/EventManager';
 
 
 // 棋子基类
 @ccclass('chessBase')
-export class chessBase extends Component {
+export class chessBase extends chessAttr {
 
     // 状态机
     fsmManager: chessFSM;
 
-    // 生命值
-    HP: number = 100;
-    private _currentHP: number = 0;
-    @property(ProgressBar)
-    HPBar: ProgressBar = null;
-    set currentHP(value: number) {
-        this._currentHP = value;
-        this.HPBar.progress = value / this.HP;
-    }
-    get currentHP() {
-        return this._currentHP;
-    }
-
-    // 攻击速度
-    attackSpeed: number = 5;
-    private attackTimer: number = 0; // 添加攻击计时器
-
-    // 魔法值
-    MP: number = 30;
-    private _currentMP: number = 0;
-    private MPTimer: number = 0;
-    @property(ProgressBar)
-    MPBar: ProgressBar = null;
-    get currentMP() {
-        return this._currentMP;
-    }
-    set currentMP(value: number) {
-        this._currentMP = value;
-        this.MPBar.progress = value / this.MP;
-    }
-
-    // 攻击力
-    ATK: number = 10;
-
-    // 当前选中的棋子
-    handleChess: chessBase = null;
-
     protected start() {
+        super.start()
         this.init()
         this.registerChessDrag()
     }
@@ -83,7 +48,6 @@ export class chessBase extends Component {
 
     init() {
         this.fsmManager = this.getComponent(chessFSM)
-        this.currentHP = this.HP
     }
 
     // 注册棋子拖拽事件

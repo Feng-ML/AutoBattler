@@ -1,7 +1,7 @@
 [
   {
     "__type__": "cc.Prefab",
-    "_name": "chess",
+    "_name": "chess_dog",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_native": "",
@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "chess",
+    "_name": "chess_dog",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": null,
@@ -790,7 +790,7 @@
     "fileId": "c6TL0miL1I5pXBy+3YKfIy"
   },
   {
-    "__type__": "f68b48CyBtAQaRTpICmuR3i",
+    "__type__": "5dd5fyEppxD75VI1pL+gOl+",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -801,20 +801,17 @@
     "__prefab": {
       "__id__": 37
     },
-    "HPBar": {
-      "__id__": 13
-    },
-    "MPBar": {
-      "__id__": 27
-    },
+    "HP": 100,
+    "MP": 30,
+    "ATK": 10,
     "_id": ""
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "ab0VRbg5lJYqh0I1kEmfRY"
+    "fileId": "d5vBBNd+5KepjNWP8BK/kb"
   },
   {
-    "__type__": "20b49MOV1dDB7vxmF0gQAJw",
+    "__type__": "4ebe1vvZPFKh4OFaynrClrY",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -829,7 +826,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "a8OmDwHTtEb4wFw7iGaYHM"
+    "fileId": "5dUuJnzdpEjbpWwrk+xkG/"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -840,6 +837,7 @@
       "__id__": 0
     },
     "fileId": "80QI1bMYBEuqdD7VgVZj2Q",
+    "instance": null,
     "targetOverrides": []
   }
 ]
