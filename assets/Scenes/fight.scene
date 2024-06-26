@@ -3862,7 +3862,7 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "_alignFlags": 40,
+    "_alignFlags": 44,
     "_target": null,
     "_left": 0,
     "_right": 0,
@@ -4144,9 +4144,15 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "chessBoardNode": {
+      "__id__": 5
+    },
     "chessPrefab": {
       "__uuid__": "4ce96907-00a7-4fc7-8412-3c4a76c0cacf",
       "__expectedType__": "cc.Prefab"
+    },
+    "bagNode": {
+      "__id__": 78
     },
     "_id": "04gECyQg1GJ4bGi+8XwrAS"
   },

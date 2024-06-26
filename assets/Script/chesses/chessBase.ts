@@ -51,20 +51,9 @@ export class chessBase extends Component {
     // 当前选中的棋子
     handleChess: chessBase = null;
 
-    protected start(): void {
+    protected start() {
         this.init()
-
-        // 拖拽棋子
-        this.node.on(Input.EventType.TOUCH_START, (event: EventMouse) => {
-            EventManager.emit(EVENT_NAME_CHESS.CHESS_TOUCH_START, event, this.node)
-        })
-        this.node.on(Input.EventType.TOUCH_END, (event: EventMouse) => {
-            EventManager.emit(EVENT_NAME_CHESS.CHESS_TOUCH_END, event)
-        })
-        this.node.on(Input.EventType.TOUCH_MOVE, (event: EventMouse) => {
-            const location = event.getUILocation();
-            this.node.setWorldPosition(new Vec3(location.x, location.y, 0))
-        })
+        this.registerChessDrag()
     }
 
     protected update(deltaTime: number) {
@@ -95,6 +84,23 @@ export class chessBase extends Component {
     init() {
         this.fsmManager = this.getComponent(chessFSM)
         this.currentHP = this.HP
+    }
+
+    // 注册棋子拖拽事件
+    registerChessDrag() {
+        this.node.on(Input.EventType.TOUCH_START, (event: EventMouse) => {
+            EventManager.emit(EVENT_NAME_CHESS.CHESS_TOUCH_START, event, this.node)
+        })
+        this.node.on(Input.EventType.TOUCH_MOVE, (event: EventMouse) => {
+            const location = event.getUILocation();
+            this.node.setWorldPosition(new Vec3(location.x, location.y, 0))
+        })
+        this.node.on(Input.EventType.TOUCH_END, (event: EventMouse) => {
+            EventManager.emit(EVENT_NAME_CHESS.CHESS_TOUCH_END, event)
+        })
+        this.node.on(Input.EventType.TOUCH_CANCEL, (event: EventMouse) => {
+            EventManager.emit(EVENT_NAME_CHESS.CHESS_TOUCH_END, event)
+        })
     }
 
     takeDamage(damage: number) {
