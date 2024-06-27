@@ -4,7 +4,8 @@ const { ccclass, property } = _decorator;
 @ccclass('chessAttr')
 export class chessAttr extends Component {
 
-    chessName: string
+    @property
+    chessName: string = '';
 
     // 生命值
     @property

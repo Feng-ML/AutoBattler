@@ -11,6 +11,7 @@ enum CHESS_LOCATION {
 }
 
 interface chessInfo {
+    prefab: Prefab;
     node: Node;
     cellIndex: number;
     position?: Vec3;
@@ -24,7 +25,7 @@ export class chessController extends Component {
     chessBoardNode: Node = null;    // 棋盘
     chessListNode: Node = null;     // 所有棋子存放地方
 
-    boardList: chessInfo[] = [{ node: null, cellIndex: 5, location: 0 }, { node: null, cellIndex: 2, location: 0 }];    // 棋盘棋子分布列表
+    boardList: chessInfo[] = [];    // 棋盘棋子分布列表
 
     handleChess: chessInfo = null;       // 当前选中的棋子
 
@@ -33,24 +34,51 @@ export class chessController extends Component {
 
     @property(Node)
     bagNode: Node = null;   // 背包
-    bagList: chessInfo[] = [{ node: null, cellIndex: 2, location: 1 }, { node: null, cellIndex: 5, location: 1 }];    // 背包棋子分布列表
+    bagList: chessInfo[] = [];    // 背包棋子分布列表
 
     start() {
         this.chessListNode = this.node.getChildByName("ChessList");
 
-        this.renderChess()
-        this.registerChessDrag()
+        this._renderChess()
+        this._registerChessDrag()
     }
 
     update(deltaTime: number) {
 
     }
 
+    // 背包是否已满
+    isBagFull() {
+        return this.bagList.length >= 9;
+    }
+
+    // 添加棋子
+    addChess(chessPrefab: Prefab) {
+        // 寻找空位
+        let cellIndex;
+        for (let i = 0; i < 9; i++) {
+            if (!this.bagList.some(item => item.cellIndex === i)) {
+                cellIndex = i;
+                break;
+            }
+        }
+
+        const chessInfo = {
+            prefab: chessPrefab,
+            node: null,
+            cellIndex,
+            location: CHESS_LOCATION.bag
+        }
+
+        this.bagList.push(chessInfo)
+        this._renderChess()
+    }
+
     // 渲染棋子
-    private renderChess() {
+    private _renderChess() {
         function setChessPos(nodeList: chessInfo[], cellListNode: Node) {
             nodeList.forEach((element, index) => {
-                const chessNode = instantiate(this.chessPrefab);
+                const chessNode = instantiate(element.prefab);
                 const cellList = cellListNode.children;
                 const cellPos = cellList[element.cellIndex].getWorldPosition();
 
@@ -68,9 +96,8 @@ export class chessController extends Component {
         setChessPos.call(this, this.bagList, this.bagNode)
     }
 
-
     // 注册棋子拖拽
-    private registerChessDrag() {
+    private _registerChessDrag() {
         EventManager.on(EVENT_NAME_CHESS.CHESS_TOUCH_START, (event: EventMouse, chess: Node) => {
             let b = this.boardList.find(e => e?.node === chess);
             let a = this.bagList.find(e => e?.node === chess);
@@ -157,6 +184,6 @@ export class chessController extends Component {
             }
         }
 
-        this.renderChess()
+        this._renderChess()
     }
 }
