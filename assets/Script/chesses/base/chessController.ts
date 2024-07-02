@@ -79,6 +79,7 @@ export class chessController extends Component {
 
     // 合并相同星级棋子
     mergeChess(chessInfo: chessInfo) {
+        if (chessInfo.star >= 3) return
         const sameChessList: chessInfo[] = []
 
         this.chessSet.forEach((chess) => {

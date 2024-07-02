@@ -18,7 +18,7 @@ export class chessBase extends chessAttr {
     protected start() {
         super.start()
         this.init()
-        this.registerChessDrag()
+        this._registerChessDrag()
     }
 
     protected update(deltaTime: number) {
@@ -46,12 +46,12 @@ export class chessBase extends chessAttr {
         }
     }
 
-    init() {
+    private init() {
         this.fsmManager = this.getComponent(chessFSM)
     }
 
     // 注册棋子拖拽事件
-    registerChessDrag() {
+    private _registerChessDrag() {
         this.node.on(Input.EventType.TOUCH_START, (event: EventMouse) => {
             EventManager.emit(EVENT_NAME_CHESS.CHESS_TOUCH_START, event, this.node)
         })
@@ -92,6 +92,7 @@ export class chessBase extends chessAttr {
 
     // 释放技能
     releaseSkill() {
+        console.log("释放技能");
         // this.fsmManager.changeState(chessState.skill)
     }
 

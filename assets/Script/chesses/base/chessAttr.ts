@@ -54,9 +54,9 @@ export class chessAttr extends Component {
     ATK: number = 10;
 
     protected start(): void {
-        this.HPBar = this.node.getChildByName('HPBar').getComponent(ProgressBar);
-        this.MPBar = this.node.getChildByName('MPBar').getComponent(ProgressBar);
-        this.starNode = this.node.getChildByName('starBox');
+        this.HPBar = this.node.getChildByPath('chessStatus/HPBar').getComponent(ProgressBar);
+        this.MPBar = this.node.getChildByPath('chessStatus/MPBar').getComponent(ProgressBar);
+        this.starNode = this.node.getChildByPath('chessStatus/starBox');
         this.currentHP = this.HP
     }
 }
