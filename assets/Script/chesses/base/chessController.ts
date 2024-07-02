@@ -11,8 +11,10 @@ enum CHESS_LOCATION {
 }
 
 interface chessInfo {
+    name: string;
     prefab: Prefab;
     node: Node;
+    star: number;
     cellIndex: number;
     position?: Vec3;
     location: CHESS_LOCATION;
@@ -23,18 +25,22 @@ export class chessController extends Component {
 
     @property(Node)
     chessBoardNode: Node = null;    // 棋盘
-    chessListNode: Node = null;     // 所有棋子存放地方
-
-    boardList: chessInfo[] = [];    // 棋盘棋子分布列表
-
-    handleChess: chessInfo = null;       // 当前选中的棋子
-
-    @property(Prefab)
-    chessPrefab: Prefab = null;
-
     @property(Node)
     bagNode: Node = null;   // 背包
-    bagList: chessInfo[] = [];    // 背包棋子分布列表
+    chessListNode: Node = null;     // 所有棋子存放地方
+
+
+    handleChess: chessInfo = null;       // 当前选中的棋子
+    // get boardList() {
+    //     return [...this.boardSet]
+    // }
+    chessSet: Set<chessInfo> = new Set();   // 所有棋子分布列表
+    get chessList() {
+        return [...this.chessSet]
+    }
+    get bagList() {
+        return this.chessList.filter(i => i.location === CHESS_LOCATION.bag)
+    }
 
     start() {
         this.chessListNode = this.node.getChildByName("ChessList");
@@ -43,17 +49,10 @@ export class chessController extends Component {
         this._registerChessDrag()
     }
 
-    update(deltaTime: number) {
-
-    }
-
-    // 背包是否已满
-    isBagFull() {
-        return this.bagList.length >= 9;
-    }
-
     // 添加棋子
     addChess(chessPrefab: Prefab) {
+        if (this.bagList.length >= 9) return false
+
         // 寻找空位
         let cellIndex;
         for (let i = 0; i < 9; i++) {
@@ -63,45 +62,69 @@ export class chessController extends Component {
             }
         }
 
-        const chessInfo = {
+        const chessInfo: chessInfo = {
+            name: chessPrefab.name,
+            star: 1,
             prefab: chessPrefab,
             node: null,
             cellIndex,
             location: CHESS_LOCATION.bag
         }
 
-        this.bagList.push(chessInfo)
+        this.chessSet.add(chessInfo)
+        this.mergeChess(chessInfo)
         this._renderChess()
+        return true
+    }
+
+    // 合并相同星级棋子
+    mergeChess(chessInfo: chessInfo) {
+        const sameChessList: chessInfo[] = []
+
+        this.chessSet.forEach((chess) => {
+            if (chess.star === chessInfo.star && chess.name === chessInfo.name) {
+                sameChessList.push(chess)
+            }
+        })
+
+        if (sameChessList.length >= 3) {
+            sameChessList[0].star += 1
+            sameChessList[0].node.getComponent(chessBase).star += 1
+
+            // 删除其他两个
+            this.chessSet.delete(sameChessList[1])
+            this.chessSet.delete(sameChessList[2])
+
+            this.mergeChess(sameChessList[0])
+        }
     }
 
     // 渲染棋子
     private _renderChess() {
-        function setChessPos(nodeList: chessInfo[], cellListNode: Node) {
-            nodeList.forEach((element, index) => {
-                const chessNode = instantiate(element.prefab);
-                const cellList = cellListNode.children;
-                const cellPos = cellList[element.cellIndex].getWorldPosition();
-
-                chessNode.setParent(this.chessListNode);
-                chessNode.setWorldPosition(cellPos);
-                element.node = chessNode;
-                element.position = cellPos;
-            });
-        }
-
         this.chessListNode.removeAllChildren()
-        // 渲染棋盘棋子
-        setChessPos.call(this, this.boardList, this.chessBoardNode)
-        // 渲染备战区棋子
-        setChessPos.call(this, this.bagList, this.bagNode)
+
+        this.chessSet.forEach((element, index) => {
+            const chessNode = element.node || instantiate(element.prefab);
+
+            let cellPos
+            if (element.location === CHESS_LOCATION.bag) {
+                cellPos = this.bagNode.children[element.cellIndex].getWorldPosition();
+            } else {
+                cellPos = this.chessBoardNode.children[element.cellIndex].getWorldPosition();
+            }
+
+            chessNode.setParent(this.chessListNode);
+            chessNode.setWorldPosition(cellPos);
+
+            element.node = chessNode;
+            element.position = cellPos;
+        });
     }
 
     // 注册棋子拖拽
     private _registerChessDrag() {
         EventManager.on(EVENT_NAME_CHESS.CHESS_TOUCH_START, (event: EventMouse, chess: Node) => {
-            let b = this.boardList.find(e => e?.node === chess);
-            let a = this.bagList.find(e => e?.node === chess);
-            this.handleChess = b || a;
+            this.handleChess = this.chessList.find(e => e?.node === chess);
         })
         // 松手后
         EventManager.on(EVENT_NAME_CHESS.CHESS_TOUCH_END, (event: EventMouse) => {
@@ -153,35 +176,22 @@ export class chessController extends Component {
     }
 
     // 获取指定格子的棋子
-    private _getChessByIndex(index: number): chessInfo {
-        if (this.handleChess.location === CHESS_LOCATION.bag) {
-            return this.bagList.find(e => e.cellIndex === index);
-        }
-        return this.boardList.find(e => e.cellIndex === index);
+    private _getChessByIndex(index: number, location: CHESS_LOCATION): chessInfo {
+        return this.chessList.find(e => e.cellIndex == index && e.location == location)
     }
 
     // 移动棋子
-    private _moveChess(location: CHESS_LOCATION, index: number) {
-        // 棋子父级相同
-        if (this.handleChess.location === location) {
-            if (this.handleChess.cellIndex === index) return this.handleChess.node.setWorldPosition(this.handleChess.position);     // 相同格子
-            const target = this._getChessByIndex(index);
-            if (target) {
-                target.cellIndex = this.handleChess.cellIndex;
-            }
-            this.handleChess.cellIndex = index;
-        }
-        // 棋子父级不同
-        else {
-            this.handleChess.cellIndex = index;
-            this.handleChess.location = location;
-            if (location === CHESS_LOCATION.bag) {
-                const i = this.boardList.findIndex(e => e === this.handleChess);
-                this.bagList.push(...this.boardList.splice(i, 1));
-            } else {
-                const i = this.bagList.findIndex(e => e === this.handleChess);
-                this.boardList.push(...this.bagList.splice(i, 1));
-            }
+    private _moveChess(targetLocation: CHESS_LOCATION, targetIndex: number) {
+        const oldIndex = this.handleChess.cellIndex;
+        const oldLocation = this.handleChess.location;
+        const target = this._getChessByIndex(targetIndex, targetLocation);  // 获取目标位置的棋子
+
+        this.handleChess.cellIndex = targetIndex;
+        this.handleChess.location = targetLocation;
+        // 交换位置
+        if (target) {
+            target.cellIndex = oldIndex;
+            target.location = oldLocation;
         }
 
         this._renderChess()

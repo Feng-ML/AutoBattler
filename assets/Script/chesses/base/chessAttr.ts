@@ -4,8 +4,19 @@ const { ccclass, property } = _decorator;
 @ccclass('chessAttr')
 export class chessAttr extends Component {
 
-    @property
-    chessName: string = '';
+    // 星级
+    private _star: number = 1;
+    starNode: Node = null;
+    set star(value: number) {
+        this._star = value;
+        const child = this.starNode.children
+        child.forEach((element, index) => {
+            element.active = index === value - 1;
+        });
+    }
+    get star() {
+        return this._star;
+    }
 
     // 生命值
     @property
@@ -45,6 +56,7 @@ export class chessAttr extends Component {
     protected start(): void {
         this.HPBar = this.node.getChildByName('HPBar').getComponent(ProgressBar);
         this.MPBar = this.node.getChildByName('MPBar').getComponent(ProgressBar);
+        this.starNode = this.node.getChildByName('starBox');
         this.currentHP = this.HP
     }
 }

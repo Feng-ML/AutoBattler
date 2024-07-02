@@ -26,8 +26,7 @@ export class shopController extends Component {
         this._shopItemNodeList.forEach((item, index) => {
             // 购买
             item.node.on(Input.EventType.TOUCH_END, () => {
-                if (this._shopList[index] && !this.chessController.isBagFull()) {
-                    this.chessController.addChess(this._shopList[index])
+                if (this._shopList[index] && this.chessController.addChess(this._shopList[index])) {
                     item.node.children.forEach(child => {
                         child.active = false
                     })
