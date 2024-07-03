@@ -149,7 +149,7 @@
     "value": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 0,
+      "y": 29.606,
       "z": 0
     }
   },
@@ -204,7 +204,7 @@
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 0.5
+      "y": 0.2
     },
     "_id": ""
   },
@@ -339,7 +339,6 @@
     },
     "fileId": "80QI1bMYBEuqdD7VgVZj2Q",
     "instance": null,
-    "targetOverrides": [],
     "nestedPrefabInstanceRoots": [
       {
         "__id__": 2

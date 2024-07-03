@@ -13,5 +13,15 @@
       "name": "Chessboard",
       "value": 32768
     }
-  ]
+  ],
+  "sorting-layer": {
+    "layers": [
+      {
+        "id": 0,
+        "name": "default",
+        "value": 0
+      }
+    ],
+    "increaseId": 1
+  }
 }

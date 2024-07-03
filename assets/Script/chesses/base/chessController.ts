@@ -126,6 +126,7 @@ export class chessController extends Component {
     private _registerChessDrag() {
         EventManager.on(EVENT_NAME_CHESS.CHESS_TOUCH_START, (event: EventMouse, chess: Node) => {
             this.handleChess = this.chessList.find(e => e?.node === chess);
+            chess.setSiblingIndex(99);
         })
         // 松手后
         EventManager.on(EVENT_NAME_CHESS.CHESS_TOUCH_END, (event: EventMouse) => {
