@@ -4,6 +4,9 @@ const { ccclass, property } = _decorator;
 @ccclass('chessAttr')
 export class chessAttr extends Component {
 
+    @property
+    chessName: string = '棋子名称';
+
     // 星级
     private _star: number = 1;
     starNode: Node = null;

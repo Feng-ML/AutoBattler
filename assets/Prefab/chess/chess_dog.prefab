@@ -149,7 +149,7 @@
     "value": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 29.606,
+      "y": 15.508,
       "z": 0
     }
   },
@@ -198,8 +198,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
-      "height": 100
+      "width": 80,
+      "height": 80
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -302,6 +302,7 @@
     "__prefab": {
       "__id__": 17
     },
+    "chessName": "秋田犬",
     "HP": 100,
     "MP": 30,
     "ATK": 10,
@@ -339,6 +340,7 @@
     },
     "fileId": "80QI1bMYBEuqdD7VgVZj2Q",
     "instance": null,
+    "targetOverrides": null,
     "nestedPrefabInstanceRoots": [
       {
         "__id__": 2

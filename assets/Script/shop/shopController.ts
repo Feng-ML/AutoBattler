@@ -48,7 +48,7 @@ export class shopController extends Component {
             const i = Math.floor(Math.random() * this.chessList1.length)
             const chess = this.chessList1[i]
             item.node.getChildByName('avatar').getComponent(Sprite).spriteFrame = chess.data.getComponent(Sprite).spriteFrame
-            item.node.getChildByPath('name').getComponent(Label).string = chess.data.getComponent(chessBase).chessName
+            item.node.getChildByName('name').getComponent(Label).string = chess.data.getComponent(chessBase).chessName
             item.node.children.forEach(child => {
                 child.active = true
             })
