@@ -28,7 +28,6 @@ export class chessBase extends chessAttr {
         if (this.fsmManager.curState === chessState.idle) this.attackTimer += deltaTime;
         // 计算每次攻击所需的时间间隔
         const attackInterval = 1.0 / this.attackSpeed;
-        // 当累积时间足够执行一次攻击时
         if (this.attackTimer >= attackInterval) {
             // this.attack();
             this.attackTimer -= attackInterval;

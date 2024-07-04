@@ -27,7 +27,7 @@ export class chessController extends Component {
     chessBoardNode: Node = null;    // 棋盘
     @property(Node)
     bagNode: Node = null;   // 背包
-    chessListNode: Node = null;     // 所有棋子存放地方
+    chessShowLayer: Node[] = null;     // 所有棋子存放地方
 
 
     handleChess: chessInfo = null;       // 当前选中的棋子
@@ -43,7 +43,7 @@ export class chessController extends Component {
     }
 
     start() {
-        this.chessListNode = this.node.getChildByName("ChessList");
+        this.chessShowLayer = this.node.getChildByName("ChessList").children;
 
         this._renderChess()
         this._registerChessDrag()
@@ -102,9 +102,12 @@ export class chessController extends Component {
 
     // 渲染棋子
     private _renderChess() {
-        this.chessListNode.removeAllChildren()
+        // this.chessListNode.removeAllChildren()
+        this.chessShowLayer.forEach((layer) => {
+            layer.removeAllChildren()
+        })
 
-        this.chessSet.forEach((element, index) => {
+        this.chessSet.forEach((element) => {
             const chessNode = element.node || instantiate(element.prefab);
 
             let cellPos
@@ -114,7 +117,16 @@ export class chessController extends Component {
                 cellPos = this.chessBoardNode.children[element.cellIndex].getWorldPosition();
             }
 
-            chessNode.setParent(this.chessListNode);
+            // 设置棋子显示层级
+            if ([2, 5, 8].includes(element.cellIndex)) {
+                chessNode.setParent(this.chessShowLayer[2])
+            } else if ([1, 4, 7].includes(element.cellIndex)) {
+                chessNode.setParent(this.chessShowLayer[1])
+            } else if ([0, 3, 6].includes(element.cellIndex)) {
+                chessNode.setParent(this.chessShowLayer[0])
+            }
+
+            // chessNode.setParent(this.chessListNode);
             chessNode.setWorldPosition(cellPos);
 
             element.node = chessNode;
@@ -126,7 +138,7 @@ export class chessController extends Component {
     private _registerChessDrag() {
         EventManager.on(EVENT_NAME_CHESS.CHESS_TOUCH_START, (event: EventMouse, chess: Node) => {
             this.handleChess = this.chessList.find(e => e?.node === chess);
-            chess.setSiblingIndex(99);
+            chess.setParent(this.chessShowLayer[2]);
         })
         // 松手后
         EventManager.on(EVENT_NAME_CHESS.CHESS_TOUCH_END, (event: EventMouse) => {

@@ -148,8 +148,8 @@
     ],
     "value": {
       "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 19.159,
+      "x": -11.481,
+      "y": 38.846,
       "z": 0
     }
   },
@@ -198,8 +198,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 80,
-      "height": 80
+      "width": 60,
+      "height": 60
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -303,6 +303,7 @@
       "__id__": 17
     },
     "chessName": "小猫",
+    "cost": 1,
     "HP": 100,
     "MP": 30,
     "ATK": 10,
