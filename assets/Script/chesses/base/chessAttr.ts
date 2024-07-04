@@ -7,6 +7,9 @@ export class chessAttr extends Component {
     @property
     chessName: string = '棋子名称';
 
+    @property
+    cost: number = 1;
+
     // 星级
     private _star: number = 1;
     starNode: Node = null;
@@ -57,8 +60,8 @@ export class chessAttr extends Component {
     ATK: number = 10;
 
     protected start(): void {
-        this.HPBar = this.node.getChildByPath('chessStatus/HPBar').getComponent(ProgressBar);
-        this.MPBar = this.node.getChildByPath('chessStatus/MPBar').getComponent(ProgressBar);
+        this.HPBar = this.node.getChildByPath('chessStatus/HPBar').getComponentInChildren(ProgressBar);
+        this.MPBar = this.node.getChildByPath('chessStatus/MPBar').getComponentInChildren(ProgressBar);
         this.starNode = this.node.getChildByPath('chessStatus/starBox');
         this.currentHP = this.HP
     }
