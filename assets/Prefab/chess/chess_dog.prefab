@@ -149,7 +149,7 @@
     "value": {
       "__type__": "cc.Vec3",
       "x": -2.64,
-      "y": 36.355,
+      "y": 36.01,
       "z": 0
     }
   },
@@ -255,7 +255,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "d535dwrzlIr5ABEI9/+1FO"
+    "fileId": "dfaEaAQEpOvLnYwoV4Z0F2"
   },
   {
     "__type__": "cc.Animation",
@@ -288,7 +288,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "c6TL0miL1I5pXBy+3YKfIy"
+    "fileId": "1aIuRATSBE8YeABNcgUTme"
   },
   {
     "__type__": "5dd5fyEppxD75VI1pL+gOl+",
@@ -311,7 +311,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "d5vBBNd+5KepjNWP8BK/kb"
+    "fileId": "8esWOx/hxNoZWTA5X0sI2E"
   },
   {
     "__type__": "4ebe1vvZPFKh4OFaynrClrY",
@@ -329,7 +329,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "5dUuJnzdpEjbpWwrk+xkG/"
+    "fileId": "aeB7E4xrdOk6BtRpngQZsk"
   },
   {
     "__type__": "cc.PrefabInfo",

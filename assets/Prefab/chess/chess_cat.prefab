@@ -46,7 +46,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -2.078,
+      "y": 0,
       "z": 0
     },
     "_lrot": {
@@ -100,7 +100,7 @@
   },
   {
     "__type__": "cc.PrefabInstance",
-    "fileId": "c81V3oZyxBKJkvytqAEkId",
+    "fileId": "e6qtshOddJo5yUv/4gjYtJ",
     "prefabRootNode": {
       "__id__": 1
     },
@@ -148,8 +148,8 @@
     ],
     "value": {
       "__type__": "cc.Vec3",
-      "x": -11.481,
-      "y": 38.846,
+      "x": -2.64,
+      "y": 38.93,
       "z": 0
     }
   },
@@ -255,7 +255,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "d535dwrzlIr5ABEI9/+1FO"
+    "fileId": "dfaEaAQEpOvLnYwoV4Z0F2"
   },
   {
     "__type__": "cc.Animation",
@@ -288,10 +288,10 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "c6TL0miL1I5pXBy+3YKfIy"
+    "fileId": "1aIuRATSBE8YeABNcgUTme"
   },
   {
-    "__type__": "4b503AdFR5AR7z94fBrF3Az",
+    "__type__": "5dd5fyEppxD75VI1pL+gOl+",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -302,7 +302,7 @@
     "__prefab": {
       "__id__": 17
     },
-    "chessName": "小猫",
+    "chessName": "秋田犬",
     "cost": 1,
     "HP": 100,
     "MP": 30,
@@ -311,7 +311,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "742my3MHtNsq3BUzLmgDZU"
+    "fileId": "8esWOx/hxNoZWTA5X0sI2E"
   },
   {
     "__type__": "4ebe1vvZPFKh4OFaynrClrY",
@@ -329,7 +329,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "d5bwBORntL/oy9wtvswyrx"
+    "fileId": "aeB7E4xrdOk6BtRpngQZsk"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -341,7 +341,7 @@
     },
     "fileId": "80QI1bMYBEuqdD7VgVZj2Q",
     "instance": null,
-    "targetOverrides": [],
+    "targetOverrides": null,
     "nestedPrefabInstanceRoots": [
       {
         "__id__": 2

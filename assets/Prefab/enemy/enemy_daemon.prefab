@@ -291,7 +291,7 @@
     "fileId": "c6TL0miL1I5pXBy+3YKfIy"
   },
   {
-    "__type__": "5dd5fyEppxD75VI1pL+gOl+",
+    "__type__": "4ebe1vvZPFKh4OFaynrClrY",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -302,19 +302,14 @@
     "__prefab": {
       "__id__": 17
     },
-    "chessName": "秋田犬",
-    "cost": 1,
-    "HP": 100,
-    "MP": 30,
-    "ATK": 10,
     "_id": ""
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "d5vBBNd+5KepjNWP8BK/kb"
+    "fileId": "5dUuJnzdpEjbpWwrk+xkG/"
   },
   {
-    "__type__": "4ebe1vvZPFKh4OFaynrClrY",
+    "__type__": "268e7rl4QVLXY099vBABC2X",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -325,11 +320,16 @@
     "__prefab": {
       "__id__": 19
     },
+    "chessName": "棋子名称",
+    "cost": 1,
+    "HP": 100,
+    "MP": 30,
+    "ATK": 10,
     "_id": ""
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "5dUuJnzdpEjbpWwrk+xkG/"
+    "fileId": "64O8z0CLJEYpVzzAXppJYa"
   },
   {
     "__type__": "cc.PrefabInfo",

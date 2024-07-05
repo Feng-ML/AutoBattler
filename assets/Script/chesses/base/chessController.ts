@@ -20,6 +20,13 @@ interface chessInfo {
     location: CHESS_LOCATION;
 }
 
+export interface enemyInfo {
+    name: string;
+    prefab: Prefab;
+    node: Node;
+    cellIndex: number;
+}
+
 @ccclass('chessController')
 export class chessController extends Component {
 
@@ -28,6 +35,10 @@ export class chessController extends Component {
     @property(Node)
     bagNode: Node = null;   // 背包
     chessShowLayer: Node[] = null;     // 所有棋子存放地方
+
+    @property(Node)
+    enemyBoardNode: Node = null;       // 敌人棋盘
+    enemyShowLayer: Node[] = null;     // 所有敌人存放地方
 
 
     handleChess: chessInfo = null;       // 当前选中的棋子
@@ -44,6 +55,7 @@ export class chessController extends Component {
 
     start() {
         this.chessShowLayer = this.node.getChildByName("ChessList").children;
+        this.enemyShowLayer = this.node.getChildByName("EnemyList").children;
 
         this._renderChess()
         this._registerChessDrag()
@@ -100,6 +112,24 @@ export class chessController extends Component {
         }
     }
 
+    // 渲染敌人
+    renderEnemy(enemyList: enemyInfo[]) {
+        this.enemyShowLayer.forEach((layer) => {
+            layer.removeAllChildren()
+        })
+
+        enemyList.forEach((element) => {
+            const chessNode = element.node || instantiate(element.prefab);
+            const cellPos = this.enemyBoardNode.children[element.cellIndex].getWorldPosition();
+
+            // 设置棋子显示层级
+            chessNode.setParent(this.enemyShowLayer[element.cellIndex % 3])
+            chessNode.setWorldPosition(cellPos);
+
+            element.node = chessNode;
+        });
+    }
+
     // 渲染棋子
     private _renderChess() {
         // this.chessListNode.removeAllChildren()
@@ -118,13 +148,7 @@ export class chessController extends Component {
             }
 
             // 设置棋子显示层级
-            if ([2, 5, 8].includes(element.cellIndex)) {
-                chessNode.setParent(this.chessShowLayer[2])
-            } else if ([1, 4, 7].includes(element.cellIndex)) {
-                chessNode.setParent(this.chessShowLayer[1])
-            } else if ([0, 3, 6].includes(element.cellIndex)) {
-                chessNode.setParent(this.chessShowLayer[0])
-            }
+            chessNode.setParent(this.chessShowLayer[element.cellIndex % 3])
 
             // chessNode.setParent(this.chessListNode);
             chessNode.setWorldPosition(cellPos);
