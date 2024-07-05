@@ -59,11 +59,14 @@ export class chessAttr extends Component {
     @property
     ATK: number = 10;
 
+    isOnBoard: boolean = false; // 是否在棋盘上
+
     protected start(): void {
-        this.HPBar = this.node.getChildByPath('chessStatus/HPBar').getComponentInChildren(ProgressBar);
-        this.MPBar = this.node.getChildByPath('chessStatus/MPBar').getComponentInChildren(ProgressBar);
-        this.starNode = this.node.getChildByPath('chessStatus/starBox');
+        this.HPBar = this.node.getChildByPath('UI/chessStatus/HPBar').getComponentInChildren(ProgressBar);
+        this.MPBar = this.node.getChildByPath('UI/chessStatus/MPBar').getComponentInChildren(ProgressBar);
+        this.starNode = this.node.getChildByPath('UI/chessStatus/starBox');
         this.currentHP = this.HP
+        this.currentMP = 0
     }
 }
 

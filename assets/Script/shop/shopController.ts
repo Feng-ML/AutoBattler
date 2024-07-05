@@ -67,7 +67,7 @@ export class shopController extends Component {
             // 刷新随机棋子
             const i = Math.floor(Math.random() * this.chessList1.length)
             const chessPrefab = this.chessList1[i]
-            item.node.getChildByName('avatar').getComponent(Sprite).spriteFrame = chessPrefab.data.getComponent(Sprite).spriteFrame
+            item.node.getChildByName('avatar').getComponent(Sprite).spriteFrame = chessPrefab.data.getChildByName('UI').getComponent(Sprite).spriteFrame
             item.node.getChildByName('name').getComponent(Label).string = chessPrefab.data.getComponent(chessBase).chessName
             item.node.getChildByName('cost').getComponent(Label).string = chessPrefab.data.getComponent(chessBase).cost
             item.node.children.forEach(child => {

@@ -226,10 +226,13 @@ export class chessController extends Component {
 
         this.handleChess.cellIndex = targetIndex;
         this.handleChess.location = targetLocation;
+        this.handleChess.node.getComponent(chessBase).isOnBoard = targetLocation == CHESS_LOCATION.board;
+
         // 交换位置
         if (target) {
             target.cellIndex = oldIndex;
             target.location = oldLocation;
+            target.node.getComponent(chessBase).isOnBoard = oldLocation == CHESS_LOCATION.board;
         }
 
         this._renderChess()

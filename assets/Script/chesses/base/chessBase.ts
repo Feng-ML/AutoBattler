@@ -27,7 +27,7 @@ export class chessBase extends chessAttr {
 
         if (this.gameLevelManager.isRunning()) {
             // 累积攻击计时器
-            if (this.fsmManager.curState === chessState.idle) this.attackTimer += deltaTime;
+            if (this.fsmManager.curState === chessState.idle && this.isOnBoard) this.attackTimer += deltaTime;
             // 计算每次攻击所需的时间间隔
             const attackInterval = 1.0 / this.attackSpeed;
             if (this.attackTimer >= attackInterval) {
@@ -36,7 +36,7 @@ export class chessBase extends chessAttr {
             }
 
             // 释放技能
-            this.MPTimer += deltaTime;
+            if (this.isOnBoard) this.MPTimer += deltaTime;
             if (this.MPTimer >= 1 && this.currentMP < this.MP) {
                 this.currentMP += 10
                 this.MPTimer = 0
@@ -50,7 +50,7 @@ export class chessBase extends chessAttr {
 
     private init() {
         this.gameLevelManager = find('Canvas').getComponent(GameLevelManager)
-        this.fsmManager = this.getComponent(chessFSM)
+        this.fsmManager = this.node.getComponent(chessFSM)
     }
 
     // 注册棋子拖拽事件

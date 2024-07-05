@@ -30,14 +30,10 @@ export class GameLevelManager extends Component {
   }
 
   isRunning(): boolean {
-    console.log(this._state);
-
     return this._state === GAME_LEVEL_STATE.LEVEL_RUNNING;
   }
 
   begin() {
     this._state = GAME_LEVEL_STATE.LEVEL_RUNNING;
-    console.log('begin');
-
   }
 }
