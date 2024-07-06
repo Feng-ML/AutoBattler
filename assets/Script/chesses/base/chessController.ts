@@ -3,7 +3,8 @@ const { ccclass, property } = _decorator;
 
 import { chessBase } from './chessBase';
 import EventManager from '../../runtime/EventManager';
-import { EVENT_NAME_CHESS } from '../../enum/chess';
+import { chessState, EVENT_NAME_CHESS } from '../../enum/chess';
+import chessFSM from './chessFSM';
 
 enum CHESS_LOCATION {
     board,
@@ -39,7 +40,7 @@ export class chessController extends Component {
     @property(Node)
     enemyBoardNode: Node = null;       // 敌人棋盘
     enemyShowLayer: Node[] = null;     // 所有敌人存放地方
-
+    enemyList: enemyInfo[] = [];       // 所有敌人分布列表
 
     handleChess: chessInfo = null;       // 当前选中的棋子
     // get boardList() {
@@ -118,7 +119,7 @@ export class chessController extends Component {
             layer.removeAllChildren()
         })
 
-        enemyList.forEach((element) => {
+        this.enemyList = enemyList.map((element) => {
             const chessNode = element.node || instantiate(element.prefab);
             const cellPos = this.enemyBoardNode.children[element.cellIndex].getWorldPosition();
 
@@ -127,7 +128,40 @@ export class chessController extends Component {
             chessNode.setWorldPosition(cellPos);
 
             element.node = chessNode;
+            return element
         });
+    }
+
+
+    // 寻找敌人
+    findEnemy(chessNode: Node, targetType: 'player' | 'enemy') {
+        const targetList = targetType === 'enemy' ? this.enemyList : this.chessList
+        if (!targetList) return
+
+        const curList = targetType === 'enemy' ? this.chessList : this.enemyList
+        const curChessIndex = curList.find(e => e.node === chessNode)?.cellIndex
+        const rowIndex = curChessIndex % 3
+        let enemy: enemyInfo | chessInfo
+
+        // 寻找当前行上的敌人
+        for (let i = 0; i < 3; i++) {
+            const eInx = targetList.findIndex(e => e.node.active && e.cellIndex === rowIndex + i * 3)
+            if (eInx > -1) {
+                enemy = targetList[eInx]
+                break
+            }
+        }
+        // 没有则按顺序寻找敌人
+        if (!enemy) {
+            for (let i = 0; i < targetList.length; i++) {
+                if (targetList[i].node.active) {
+                    enemy = targetList[i]
+                    break
+                }
+            }
+        }
+
+        return enemy
     }
 
     // 渲染棋子

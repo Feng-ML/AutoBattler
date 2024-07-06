@@ -7,14 +7,18 @@ import { chessboard } from '../../chessboard/chessboard';
 import { chessAttr } from './chessAttr';
 import EventManager from '../../runtime/EventManager';
 import { GameLevelManager } from '../../runtime/GameLevelManager';
+import { chessController } from './chessController';
 
 // 棋子基类
 @ccclass('chessBase')
 export class chessBase extends chessAttr {
-
+    // 游戏关卡管理器
     gameLevelManager: GameLevelManager = null
     // 状态机
     fsmManager: chessFSM;
+
+    // 棋子控制器
+    chessController: chessController = null;
 
     protected start() {
         super.start()
@@ -50,6 +54,7 @@ export class chessBase extends chessAttr {
 
     private init() {
         this.gameLevelManager = find('Canvas').getComponent(GameLevelManager)
+        this.chessController = find('Canvas').getComponent(chessController)
         this.fsmManager = this.node.getComponent(chessFSM)
     }
 
@@ -81,16 +86,17 @@ export class chessBase extends chessAttr {
         }
     }
 
-    attack() {
-        // const nodeIndex = this.node.parent.getSiblingIndex()
-        // const Chessboard = this.node.parent.parent.getComponent(chessboard)
+    protected findEnemy() {
+        return this.chessController.findEnemy(this.node, 'enemy')
+    }
 
-        // const enemy = Chessboard.findNearestTarget(nodeIndex)
-        // if (enemy) {
-        this.fsmManager.changeState(chessState.attack)
-        //     const chess = enemy.getComponent(chessBase)
-        //     chess.takeDamage(this.ATK)
-        // }
+    attack() {
+        const enemy = this.findEnemy()
+        if (enemy) {
+            this.fsmManager.changeState(chessState.attack)
+            const chess = enemy.node.getComponent(chessBase)
+            chess.takeDamage(this.ATK)
+        }
     }
 
     // 释放技能
@@ -100,7 +106,7 @@ export class chessBase extends chessAttr {
 
     die() {
         this.fsmManager.changeState(chessState.death)
-        // this.node.destroy()
+        this.node.destroy()
     }
 }
 
