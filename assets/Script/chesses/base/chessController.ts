@@ -1,10 +1,10 @@
-import { _decorator, Component, Node, instantiate, Prefab, Input, EventMouse, Vec3, Vec2, UITransform } from 'cc';
+import { _decorator, Component, Node, instantiate, Prefab, Input, EventMouse, Vec3, Vec2, UITransform, find } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { chessBase } from './chessBase';
 import EventManager from '../../runtime/EventManager';
-import { chessState, EVENT_NAME_CHESS } from '../../enum/chess';
-import chessFSM from './chessFSM';
+import { CHESS_TYPE, EVENT_NAME_CHESS } from '../../enum/chess';
+import { GameLevelManager } from '../../runtime/GameLevelManager';
 
 enum CHESS_LOCATION {
     board,
@@ -31,6 +31,7 @@ export interface enemyInfo {
 @ccclass('chessController')
 export class chessController extends Component {
 
+    gameLevelManager: GameLevelManager = null;
     @property(Node)
     chessBoardNode: Node = null;    // 棋盘
     @property(Node)
@@ -57,7 +58,9 @@ export class chessController extends Component {
     start() {
         this.chessShowLayer = this.node.getChildByName("ChessList").children;
         this.enemyShowLayer = this.node.getChildByName("EnemyList").children;
+        this.gameLevelManager = find('Canvas').getComponent(GameLevelManager)
 
+        this._init()
         this._renderChess()
         this._registerChessDrag()
     }
@@ -132,13 +135,12 @@ export class chessController extends Component {
         });
     }
 
-
     // 寻找敌人
-    findEnemy(chessNode: Node, targetType: 'player' | 'enemy') {
-        const targetList = targetType === 'enemy' ? this.enemyList : this.chessList
+    findEnemy(chessNode: Node, curChessType: CHESS_TYPE) {
+        const targetList = curChessType === CHESS_TYPE.player ? this.enemyList : this.chessList
         if (!targetList) return
 
-        const curList = targetType === 'enemy' ? this.chessList : this.enemyList
+        const curList = curChessType === CHESS_TYPE.player ? this.chessList : this.enemyList
         const curChessIndex = curList.find(e => e.node === chessNode)?.cellIndex
         const rowIndex = curChessIndex % 3
         let enemy: enemyInfo | chessInfo
@@ -166,6 +168,20 @@ export class chessController extends Component {
         }
 
         return enemy
+    }
+
+    private _init() {
+        EventManager.on(EVENT_NAME_CHESS.CHESS_DIE, (chessNode: Node, curChessType: CHESS_TYPE) => {
+            if (curChessType === CHESS_TYPE.player) {
+                const inx = this.chessList.findIndex(e => e.node?.active && e.location === CHESS_LOCATION.board)
+                if (inx < 0) this.gameLevelManager.lose()
+            }
+
+            if (curChessType === CHESS_TYPE.enemy) {
+                const inx = this.enemyList.findIndex(e => e.node?.active)
+                if (inx < 0) this.gameLevelManager.win()
+            }
+        })
     }
 
     // 渲染棋子

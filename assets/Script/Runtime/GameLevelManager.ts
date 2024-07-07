@@ -6,6 +6,8 @@ enum GAME_LEVEL_STATE {
   LEVEL_START,
   LEVEL_RUNNING,
   LEVEL_END,
+  LEVEL_GAME_WIN,
+  LEVEL_GAME_LOSE,
 }
 
 // 游戏关卡管理器
@@ -35,5 +37,15 @@ export class GameLevelManager extends Component {
 
   begin() {
     this._state = GAME_LEVEL_STATE.LEVEL_RUNNING;
+  }
+
+  win() {
+    this._state = GAME_LEVEL_STATE.LEVEL_GAME_WIN;
+    console.log('win');
+  }
+
+  lose() {
+    this._state = GAME_LEVEL_STATE.LEVEL_GAME_LOSE;
+    console.log('lose');
   }
 }

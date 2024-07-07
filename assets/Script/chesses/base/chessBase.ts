@@ -2,7 +2,7 @@ import { _decorator, Component, Vec3, ProgressBar, Input, EventMouse, find } fro
 const { ccclass, property } = _decorator;
 
 import chessFSM from './chessFSM';
-import { chessState, EVENT_NAME_CHESS } from '../../enum/chess';
+import { CHESS_STATE, EVENT_NAME_CHESS } from '../../enum/chess';
 import { chessAttr } from './chessAttr';
 import EventManager from '../../runtime/EventManager';
 import { GameLevelManager } from '../../runtime/GameLevelManager';
@@ -28,11 +28,11 @@ export class chessBase extends chessAttr {
     }
 
     protected update(deltaTime: number) {
-        if (this.fsmManager.curState === chessState.death) return;
+        if (this.fsmManager.curState === CHESS_STATE.death) return;
 
         if (this.gameLevelManager.isRunning()) {
             // 累积攻击计时器
-            if (this.fsmManager.curState === chessState.idle && this.isOnBoard) this.attackTimer += deltaTime;
+            if (this.fsmManager.curState === CHESS_STATE.idle && this.isOnBoard) this.attackTimer += deltaTime;
             // 计算每次攻击所需的时间间隔
             const attackInterval = 1.0 / this.attackSpeed;
             if (this.attackTimer >= attackInterval) {
@@ -46,7 +46,7 @@ export class chessBase extends chessAttr {
                 this.currentMP += 10
                 this.MPTimer = 0
             }
-            if (this.currentMP >= this.MP && this.fsmManager.curState === chessState.idle) {
+            if (this.currentMP >= this.MP && this.fsmManager.curState === CHESS_STATE.idle) {
                 this.releaseSkill()
             }
         }
@@ -77,7 +77,7 @@ export class chessBase extends chessAttr {
     }
 
     takeDamage(damage: number) {
-        if (this.fsmManager.curState === chessState.death) return;
+        if (this.fsmManager.curState === CHESS_STATE.death) return;
         this.popupTextManager.popupTextRender(damage, this.node.getWorldPosition(), POPUP_TEXT_TYPE.damage)
         if (this.currentHP <= damage) {
             this.currentHP = 0
@@ -88,14 +88,10 @@ export class chessBase extends chessAttr {
         }
     }
 
-    protected findEnemy() {
-        return this.chessController.findEnemy(this.node, 'enemy')
-    }
-
     attack() {
-        const enemy = this.findEnemy()
+        const enemy = this.chessController.findEnemy(this.node, this.chessType)
         if (enemy) {
-            this.fsmManager.changeState(chessState.attack)
+            this.fsmManager.changeState(CHESS_STATE.attack)
             const chess = enemy.node.getComponent(chessBase)
             chess.takeDamage(this.ATK)
         }
@@ -103,16 +99,17 @@ export class chessBase extends chessAttr {
 
     // 释放技能
     releaseSkill() {
-        const enemy = this.findEnemy()
+        const enemy = this.chessController.findEnemy(this.node, this.chessType)
         if (enemy) {
             this.currentMP = 0
-            this.fsmManager.changeState(chessState.skill)
+            this.fsmManager.changeState(CHESS_STATE.skill)
         }
     }
 
     die() {
-        this.fsmManager.changeState(chessState.death)
+        this.fsmManager.changeState(CHESS_STATE.death)
         this.node.destroy()
+        EventManager.emit(EVENT_NAME_CHESS.CHESS_DIE, this.node, this.chessType)
     }
 }
 

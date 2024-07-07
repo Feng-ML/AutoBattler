@@ -1,6 +1,6 @@
 import { _decorator, Component, Node, Animation, AnimationState } from 'cc';
 const { ccclass, property } = _decorator;
-import { chessState } from '../../enum/chess';
+import { CHESS_STATE } from '../../enum/chess';
 
 // 棋子状态机
 @ccclass('chessFSM')
@@ -8,7 +8,7 @@ export default class chessFSM extends Component {
 
   anim: Animation;
 
-  curState: chessState = chessState.idle;
+  curState: CHESS_STATE = CHESS_STATE.idle;
 
   start(): void {
     this.anim = this.getComponent(Animation);
@@ -16,13 +16,13 @@ export default class chessFSM extends Component {
     this.anim.on("finished", this.onFinished, this)
   }
 
-  changeState(stateID: chessState) {
+  changeState(stateID: CHESS_STATE) {
     this.curState = stateID;
     switch (stateID) {
-      case chessState.skill:
+      case CHESS_STATE.skill:
         this.anim.play('skill');
         break;
-      case chessState.attack:
+      case CHESS_STATE.attack:
         this.anim.play('attack');
       default:
         break;
@@ -32,9 +32,9 @@ export default class chessFSM extends Component {
   // 动画播放结束
   onFinished() {
     switch (this.curState) {
-      case chessState.skill:
-      case chessState.attack:
-        this.changeState(chessState.idle);
+      case CHESS_STATE.skill:
+      case CHESS_STATE.attack:
+        this.changeState(CHESS_STATE.idle);
         break;
       default:
         break;

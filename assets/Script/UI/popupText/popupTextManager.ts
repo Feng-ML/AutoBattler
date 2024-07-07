@@ -1,8 +1,4 @@
-import { instantiate } from 'cc';
-import { Label } from 'cc';
-import { Vec3 } from 'cc';
-import { Prefab } from 'cc';
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, Node, Prefab, Vec3, Label, instantiate } from 'cc';
 const { ccclass, property } = _decorator;
 
 export enum POPUP_TEXT_TYPE {

@@ -1,4 +1,5 @@
 import { _decorator, Component, Node, ProgressBar } from 'cc';
+import { CHESS_TYPE } from '../../enum/chess';
 const { ccclass, property } = _decorator;
 
 @ccclass('chessAttr')
@@ -6,6 +7,8 @@ export class chessAttr extends Component {
 
     @property
     chessName: string = '棋子名称';
+
+    chessType: CHESS_TYPE = CHESS_TYPE.player;
 
     @property
     cost: number = 1;
