@@ -3,20 +3,21 @@ const { ccclass, property } = _decorator;
 
 import chessFSM from './chessFSM';
 import { chessState, EVENT_NAME_CHESS } from '../../enum/chess';
-import { chessboard } from '../../chessboard/chessboard';
 import { chessAttr } from './chessAttr';
 import EventManager from '../../runtime/EventManager';
 import { GameLevelManager } from '../../runtime/GameLevelManager';
 import { chessController } from './chessController';
+import { popupTextManager, POPUP_TEXT_TYPE } from '../../UI/popupText/popupTextManager';
 
 // 棋子基类
 @ccclass('chessBase')
 export class chessBase extends chessAttr {
     // 游戏关卡管理器
     gameLevelManager: GameLevelManager = null
+    // 弹出文字管理器
+    popupTextManager: popupTextManager = null
     // 状态机
     fsmManager: chessFSM;
-
     // 棋子控制器
     chessController: chessController = null;
 
@@ -47,7 +48,6 @@ export class chessBase extends chessAttr {
             }
             if (this.currentMP >= this.MP && this.fsmManager.curState === chessState.idle) {
                 this.releaseSkill()
-                this.currentMP = 0
             }
         }
     }
@@ -55,6 +55,7 @@ export class chessBase extends chessAttr {
     private init() {
         this.gameLevelManager = find('Canvas').getComponent(GameLevelManager)
         this.chessController = find('Canvas').getComponent(chessController)
+        this.popupTextManager = find('Canvas').getComponent(popupTextManager)
         this.fsmManager = this.node.getComponent(chessFSM)
     }
 
@@ -77,6 +78,7 @@ export class chessBase extends chessAttr {
 
     takeDamage(damage: number) {
         if (this.fsmManager.curState === chessState.death) return;
+        this.popupTextManager.popupTextRender(damage, this.node.getWorldPosition(), POPUP_TEXT_TYPE.damage)
         if (this.currentHP <= damage) {
             this.currentHP = 0
             this.die()
@@ -101,7 +103,11 @@ export class chessBase extends chessAttr {
 
     // 释放技能
     releaseSkill() {
-        this.fsmManager.changeState(chessState.skill)
+        const enemy = this.findEnemy()
+        if (enemy) {
+            this.currentMP = 0
+            this.fsmManager.changeState(chessState.skill)
+        }
     }
 
     die() {

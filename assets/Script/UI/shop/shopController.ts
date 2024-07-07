@@ -2,8 +2,8 @@ import { _decorator, Component, Node, Prefab, Label, Sprite, Input, ProgressBar 
 const { ccclass, property } = _decorator;
 
 import { shopItem } from './shopItem';
-import { chessBase } from '../chesses/base/chessBase';
-import { chessController } from '../chesses/base/chessController';
+import { chessBase } from '../../chesses/base/chessBase';
+import { chessController } from '../../chesses/base/chessController';
 
 @ccclass('shopController')
 export class shopController extends Component {

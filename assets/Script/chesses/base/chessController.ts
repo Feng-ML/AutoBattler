@@ -143,9 +143,13 @@ export class chessController extends Component {
         const rowIndex = curChessIndex % 3
         let enemy: enemyInfo | chessInfo
 
+        function canAttack(node: Node) {
+            return node.active && node.getComponent(chessBase)?.isOnBoard
+        }
+
         // 寻找当前行上的敌人
         for (let i = 0; i < 3; i++) {
-            const eInx = targetList.findIndex(e => e.node.active && e.cellIndex === rowIndex + i * 3)
+            const eInx = targetList.findIndex(e => canAttack(e.node) && e.cellIndex === rowIndex + i * 3)
             if (eInx > -1) {
                 enemy = targetList[eInx]
                 break
@@ -154,7 +158,7 @@ export class chessController extends Component {
         // 没有则按顺序寻找敌人
         if (!enemy) {
             for (let i = 0; i < targetList.length; i++) {
-                if (targetList[i].node.active) {
+                if (canAttack(targetList[i].node)) {
                     enemy = targetList[i]
                     break
                 }

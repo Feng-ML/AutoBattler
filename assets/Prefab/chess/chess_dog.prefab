@@ -317,6 +317,8 @@
       "__id__": 0
     },
     "fileId": "3729OytmpCl4ojRIQVValy",
+    "instance": null,
+    "targetOverrides": null,
     "nestedPrefabInstanceRoots": null
   },
   {
@@ -399,7 +401,7 @@
     "fileId": "aeB7E4xrdOk6BtRpngQZsk"
   },
   {
-    "__type__": "5dd5fyEppxD75VI1pL+gOl+",
+    "__type__": "65786IHUS5B4LStrdDqGwBP",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -419,7 +421,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "8esWOx/hxNoZWTA5X0sI2E"
+    "fileId": "3bsm4oouBHRZumMUEz0H4e"
   },
   {
     "__type__": "cc.PrefabInfo",
