@@ -10,3 +10,8 @@ export enum EVENT_NAME_GAME_LEVEL {
   GAME_LEVEL_START = "游戏关卡开始",
   GAME_LEVEL_END = "游戏关卡结束",
 }
+
+export enum EVENT_NAME_PLAYER {
+  PLAYER_HP_CHANGE = "玩家血量变化",
+  PLAYER_COIN_CHANGE = "玩家金币变化",
+}

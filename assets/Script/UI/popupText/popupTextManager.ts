@@ -19,22 +19,12 @@ export class popupTextManager extends Component {
     @property(Prefab)
     criticalDamagePopupText: Prefab = null;
 
-
-    start() {
-
-    }
-
-    update(deltaTime: number) {
-
-    }
-
-
     popupTextRender(text: string | number, position: Vec3, textType: POPUP_TEXT_TYPE) {
         const popupTextNode = instantiate(this.damagePopupText);
         popupTextNode.getChildByName('label').getComponent(Label).string = text.toString();
         // popupTextNode.setWorldPosition(position);
 
-        popupTextNode.setParent(this.node.getChildByName('popupText'));
+        popupTextNode.setParent(this.node.getChildByName('PopupText'));
         // 添加随机曲线动画
         popupTextNode.setPosition(position.x + Math.random() * 10, position.y + Math.random() * 10 + 15, position.z);
 

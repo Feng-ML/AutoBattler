@@ -4,6 +4,7 @@ const { ccclass, property } = _decorator;
 import { shopItem } from './shopItem';
 import { chessBase } from '../../chesses/base/chessBase';
 import { chessController } from '../../chesses/base/chessController';
+import GameManager from '../../runtime/GameManager';
 
 @ccclass('shopController')
 export class shopController extends Component {
@@ -49,7 +50,13 @@ export class shopController extends Component {
         this._shopItemNodeList.forEach((item, index) => {
             // 购买
             item.node.on(Input.EventType.TOUCH_END, () => {
-                if (this._shopList[index] && this.chessController.addChess(this._shopList[index])) {
+                const Prefab = this._shopList[index]
+                if (!Prefab) return
+
+                const cost = Prefab.data.getComponent(chessBase).cost
+                if (cost <= GameManager.playerCoin && this.chessController.addChess(Prefab)) {
+                    GameManager.coinChange(-cost)
+
                     item.node.children.forEach(child => {
                         child.active = false
                     })
@@ -69,7 +76,7 @@ export class shopController extends Component {
             const chessPrefab = this.chessList1[i]
             item.node.getChildByName('avatar').getComponent(Sprite).spriteFrame = chessPrefab.data.getChildByName('UI').getComponent(Sprite).spriteFrame
             item.node.getChildByName('name').getComponent(Label).string = chessPrefab.data.getComponent(chessBase).chessName
-            item.node.getChildByName('cost').getComponent(Label).string = chessPrefab.data.getComponent(chessBase).cost
+            item.node.getChildByName('cost').getComponentInChildren(Label).string = chessPrefab.data.getComponent(chessBase).cost
             item.node.children.forEach(child => {
                 child.active = true
             })
@@ -79,6 +86,9 @@ export class shopController extends Component {
 
     // 升级
     upgrade() {
+        if (GameManager.playerCoin < 4) return
+
+        GameManager.coinChange(-4)
         this.shopCurEXP += 4
         if (this.shopCurEXP >= this.shopMaxEXP) {
             this.shopLevel++
