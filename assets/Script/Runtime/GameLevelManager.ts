@@ -1,6 +1,8 @@
 import { _decorator, Component, Node, Prefab, Label, Sprite, Input, ProgressBar } from 'cc';
 const { ccclass, property } = _decorator;
 import { chessController, enemyInfo } from '../chesses/base/chessController';
+import EventManager from './EventManager';
+import { EVENT_NAME_GAME_LEVEL } from '../enum/game';
 
 enum GAME_LEVEL_STATE {
   LEVEL_START,
@@ -20,7 +22,6 @@ export class GameLevelManager extends Component {
   @property([Prefab])
   enemyList: Prefab[] = [];
 
-
   protected start(): void {
     const enemy: enemyInfo[] = [
       { name: 'daemon', prefab: this.enemyList[0], node: null, cellIndex: 1 },
@@ -37,6 +38,7 @@ export class GameLevelManager extends Component {
 
   begin() {
     this._state = GAME_LEVEL_STATE.LEVEL_RUNNING;
+    EventManager.emit(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_START, this._currentLevel);
   }
 
   win() {

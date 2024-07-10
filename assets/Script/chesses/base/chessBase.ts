@@ -62,16 +62,20 @@ export class chessBase extends chessAttr {
     // 注册棋子拖拽事件
     protected _registerChessDrag() {
         this.node.on(Input.EventType.TOUCH_START, (event: EventMouse) => {
+            if (this.gameLevelManager.isRunning()) return
             EventManager.emit(EVENT_NAME_CHESS.CHESS_TOUCH_START, event, this.node)
         })
         this.node.on(Input.EventType.TOUCH_MOVE, (event: EventMouse) => {
+            if (this.gameLevelManager.isRunning()) return
             const location = event.getUILocation();
             this.node.setWorldPosition(new Vec3(location.x, location.y, 0))
         })
         this.node.on(Input.EventType.TOUCH_END, (event: EventMouse) => {
+            if (this.gameLevelManager.isRunning()) return
             EventManager.emit(EVENT_NAME_CHESS.CHESS_TOUCH_END, event)
         })
         this.node.on(Input.EventType.TOUCH_CANCEL, (event: EventMouse) => {
+            if (this.gameLevelManager.isRunning()) return
             EventManager.emit(EVENT_NAME_CHESS.CHESS_TOUCH_END, event)
         })
     }

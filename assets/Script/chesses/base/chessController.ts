@@ -5,6 +5,8 @@ import { chessBase } from './chessBase';
 import EventManager from '../../runtime/EventManager';
 import { CHESS_TYPE, EVENT_NAME_CHESS } from '../../enum/chess';
 import { GameLevelManager } from '../../runtime/GameLevelManager';
+import GameManager from '../../runtime/GameManager';
+import { EVENT_NAME_GAME_LEVEL } from '../../enum/game';
 
 enum CHESS_LOCATION {
     board,
@@ -159,10 +161,13 @@ export class chessController extends Component {
         }
         // 没有则按顺序寻找敌人
         if (!enemy) {
+            let preIndex = 9
             for (let i = 0; i < targetList.length; i++) {
                 if (canAttack(targetList[i].node)) {
-                    enemy = targetList[i]
-                    break
+                    if (targetList[i].cellIndex < preIndex) {
+                        preIndex = targetList[i].cellIndex
+                        enemy = targetList[i]
+                    }
                 }
             }
         }
@@ -171,16 +176,34 @@ export class chessController extends Component {
     }
 
     private _init() {
+        // 棋子死亡
         EventManager.on(EVENT_NAME_CHESS.CHESS_DIE, (chessNode: Node, curChessType: CHESS_TYPE) => {
             if (curChessType === CHESS_TYPE.player) {
                 const inx = this.chessList.findIndex(e => e.node?.active && e.location === CHESS_LOCATION.board)
-                if (inx < 0) this.gameLevelManager.lose()
+                if (inx < 0) {
+                    this.gameLevelManager.lose()
+                    let hurt = 0
+                    this.enemyList.forEach((e) => {
+                        if (e.node?.active) {
+                            hurt += e.node.getComponent(chessBase).star
+                        }
+                    })
+                    GameManager.hpChange(-hurt)
+                }
             }
 
             if (curChessType === CHESS_TYPE.enemy) {
                 const inx = this.enemyList.findIndex(e => e.node?.active)
                 if (inx < 0) this.gameLevelManager.win()
             }
+        })
+
+        EventManager.on(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_START, () => {
+            this.chessSet.forEach((element) => {
+                if (element.location === CHESS_LOCATION.bag) {
+                    element.node.active = false
+                }
+            });
         })
     }
 
