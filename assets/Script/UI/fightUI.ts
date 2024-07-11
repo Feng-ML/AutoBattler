@@ -12,6 +12,9 @@ export class fightUI extends Component {
 
     start() {
         EventManager.on(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_START, () => {
+            this.bottomNode.active = true;
+        })
+        EventManager.on(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_RUNNING, () => {
             this.bottomNode.active = false;
         })
     }

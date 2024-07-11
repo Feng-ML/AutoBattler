@@ -148,7 +148,7 @@ export class chessController extends Component {
         let enemy: enemyInfo | chessInfo
 
         function canAttack(node: Node) {
-            return node.active && node.getComponent(chessBase)?.isOnBoard
+            return node?.active && node.getComponent(chessBase)?.isOnBoard
         }
 
         // 寻找当前行上的敌人
@@ -179,6 +179,7 @@ export class chessController extends Component {
         // 棋子死亡
         EventManager.on(EVENT_NAME_CHESS.CHESS_DIE, (chessNode: Node, curChessType: CHESS_TYPE) => {
             if (curChessType === CHESS_TYPE.player) {
+                this.chessList.find(e => e.node === chessNode).node = null
                 const inx = this.chessList.findIndex(e => e.node?.active && e.location === CHESS_LOCATION.board)
                 if (inx < 0) {
                     this.gameLevelManager.lose()
@@ -199,6 +200,10 @@ export class chessController extends Component {
         })
 
         EventManager.on(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_START, () => {
+            this._renderChess()
+        })
+
+        EventManager.on(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_RUNNING, () => {
             this.chessSet.forEach((element) => {
                 if (element.location === CHESS_LOCATION.bag) {
                     element.node.active = false
@@ -215,13 +220,18 @@ export class chessController extends Component {
         })
 
         this.chessSet.forEach((element) => {
+            if (element.node && element.location === CHESS_LOCATION.bag) {
+                element.node.active = true
+            }
             const chessNode = element.node || instantiate(element.prefab);
 
             let cellPos
             if (element.location === CHESS_LOCATION.bag) {
                 cellPos = this.bagNode.children[element.cellIndex].getWorldPosition();
-            } else {
+            }
+            if (element.location === CHESS_LOCATION.board) {
                 cellPos = this.chessBoardNode.children[element.cellIndex].getWorldPosition();
+                chessNode.getComponent(chessBase).isOnBoard = true
             }
 
             // 设置棋子显示层级

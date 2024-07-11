@@ -12,24 +12,27 @@ enum GAME_LEVEL_STATE {
   LEVEL_GAME_LOSE,
 }
 
+// 游戏关卡类型
+export enum GAME_LEVEL_TYPE {
+  RELIC = '遗物',
+  GOLD = '金币',
+  SHOP = '商店',
+  BLACKSMITH = '铁匠',
+}
+
 // 游戏关卡管理器
 @ccclass('GameLevelManager')
 export class GameLevelManager extends Component {
   // 当前关卡
   private _currentLevel: number = 1;
   private _state: GAME_LEVEL_STATE = GAME_LEVEL_STATE.LEVEL_START;
+  gameLevelType: GAME_LEVEL_TYPE = GAME_LEVEL_TYPE.GOLD;
 
   @property([Prefab])
   enemyList: Prefab[] = [];
 
   protected start(): void {
-    const enemy: enemyInfo[] = [
-      { name: 'daemon', prefab: this.enemyList[0], node: null, cellIndex: 1 },
-      { name: 'daemon', prefab: this.enemyList[0], node: null, cellIndex: 3 },
-      { name: 'daemon', prefab: this.enemyList[0], node: null, cellIndex: 5 },
-    ]
-
-    this.node.getComponent(chessController).renderEnemy(enemy)
+    this.renderEnemy()
   }
 
   isRunning(): boolean {
@@ -38,16 +41,37 @@ export class GameLevelManager extends Component {
 
   begin() {
     this._state = GAME_LEVEL_STATE.LEVEL_RUNNING;
-    EventManager.emit(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_START, this._currentLevel);
+    EventManager.emit(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_RUNNING, this._currentLevel);
   }
 
   win() {
     this._state = GAME_LEVEL_STATE.LEVEL_GAME_WIN;
     console.log('win');
+    EventManager.emit(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_END, this._currentLevel);
   }
 
   lose() {
     this._state = GAME_LEVEL_STATE.LEVEL_GAME_LOSE;
     console.log('lose');
+    EventManager.emit(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_END, this._currentLevel);
+  }
+
+  // 下一关
+  nextLevelSelect(levelType: GAME_LEVEL_TYPE) {
+    this._currentLevel++;
+    this.gameLevelType = levelType;
+    this.renderEnemy()
+    EventManager.emit(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_START, this._currentLevel);
+  }
+
+  // 渲染敌人
+  private renderEnemy() {
+    const enemy: enemyInfo[] = [
+      { name: 'daemon', prefab: this.enemyList[0], node: null, cellIndex: 1 },
+      { name: 'daemon', prefab: this.enemyList[0], node: null, cellIndex: 3 },
+      { name: 'daemon', prefab: this.enemyList[0], node: null, cellIndex: 5 },
+    ]
+
+    this.node.getComponent(chessController).renderEnemy(enemy)
   }
 }

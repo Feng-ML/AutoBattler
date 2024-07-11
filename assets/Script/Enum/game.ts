@@ -8,6 +8,7 @@ export enum EVENT_NAME_GAME {
 
 export enum EVENT_NAME_GAME_LEVEL {
   GAME_LEVEL_START = "游戏关卡开始",
+  GAME_LEVEL_RUNNING = "游戏关卡运行中",
   GAME_LEVEL_END = "游戏关卡结束",
 }
 
