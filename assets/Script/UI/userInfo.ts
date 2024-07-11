@@ -1,10 +1,9 @@
-import { ProgressBar } from 'cc';
-import { Label } from 'cc';
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, Label, ProgressBar } from 'cc';
+const { ccclass, property } = _decorator;
+
 import EventManager from '../runtime/EventManager';
 import { EVENT_NAME_PLAYER } from '../enum/game';
 import GameManager from '../runtime/GameManager';
-const { ccclass, property } = _decorator;
 
 @ccclass('userInfo')
 export class userInfo extends Component {

@@ -1,6 +1,7 @@
 import { _decorator, Component, Node, ProgressBar } from 'cc';
-import { CHESS_TYPE } from '../../enum/chess';
 const { ccclass, property } = _decorator;
+
+import { CHESS_TYPE } from '../../enum/chess';
 
 @ccclass('chessAttr')
 export class chessAttr extends Component {
@@ -68,8 +69,14 @@ export class chessAttr extends Component {
         this.HPBar = this.node.getChildByPath('UI/chessStatus/HPBar').getComponentInChildren(ProgressBar);
         this.MPBar = this.node.getChildByPath('UI/chessStatus/MPBar').getComponentInChildren(ProgressBar);
         this.starNode = this.node.getChildByPath('UI/chessStatus/starBox');
+        this.init()
+    }
+
+    init() {
         this.currentHP = this.HP
         this.currentMP = 0
+        this.attackTimer = 0
+        this.MPTimer = 0
     }
 }
 

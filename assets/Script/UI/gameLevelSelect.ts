@@ -1,8 +1,9 @@
 import { _decorator, Component, find, Input } from 'cc';
+const { ccclass, property } = _decorator;
+
 import { GAME_LEVEL_TYPE, GameLevelManager } from '../runtime/GameLevelManager';
 import EventManager from '../runtime/EventManager';
 import { EVENT_NAME_GAME_LEVEL } from '../enum/game';
-const { ccclass, property } = _decorator;
 
 @ccclass('gameLevelSelect')
 export class gameLevelSelect extends Component {

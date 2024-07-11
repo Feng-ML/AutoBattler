@@ -214,7 +214,6 @@ export class chessController extends Component {
 
     // 渲染棋子
     private _renderChess() {
-        // this.chessListNode.removeAllChildren()
         this.chessShowLayer.forEach((layer) => {
             layer.removeAllChildren()
         })
@@ -233,11 +232,10 @@ export class chessController extends Component {
                 cellPos = this.chessBoardNode.children[element.cellIndex].getWorldPosition();
                 chessNode.getComponent(chessBase).isOnBoard = true
             }
+            chessNode.getComponent(chessBase).init()
 
             // 设置棋子显示层级
             chessNode.setParent(this.chessShowLayer[element.cellIndex % 3])
-
-            // chessNode.setParent(this.chessListNode);
             chessNode.setWorldPosition(cellPos);
 
             element.node = chessNode;

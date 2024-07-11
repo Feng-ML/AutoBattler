@@ -99,6 +99,13 @@ export class shopController extends Component {
         this._shopInfoRender()
     }
 
+    // 刷新
+    refresh() {
+        if (GameManager.playerCoin < 2) return
+        GameManager.coinChange(-2)
+        this.loadShopChess()
+    }
+
     // 渲染UI
     private _shopInfoRender() {
         this._shopLvLabel.string = this.shopLevel.toString()

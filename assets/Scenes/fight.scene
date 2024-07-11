@@ -6489,7 +6489,7 @@
     },
     "component": "",
     "_componentId": "a56e5WeobtKf6hjt4T3syBm",
-    "handler": "loadShopChess",
+    "handler": "refresh",
     "customEventData": ""
   },
   {
