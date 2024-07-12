@@ -3,7 +3,7 @@ import EventManager from "./EventManager";
 
 class GameManager {
   //玩家金币
-  playerCoin: number = 10;
+  playerCoin: number = 20;
 
   playerHP: number = 100;
   playerMaxHP: number = 100;

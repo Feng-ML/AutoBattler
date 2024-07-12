@@ -60,8 +60,10 @@ export class shopController extends Component {
 
                 const cost = Prefab.data.getComponent(chessBase).cost
                 if (cost <= GameManager.playerCoin && this.chessController.addChess(Prefab)) {
-                    GameManager.coinChange(-cost)
+                    item.getChildByName('cost').getComponentInChildren(Label).string = '0'
 
+                    GameManager.coinChange(-cost)
+                    // item.getComponent(Sprite).color = new Color('#909399')
                     item.children.forEach(child => {
                         child.active = false
                     })
