@@ -1,7 +1,7 @@
 [
   {
     "__type__": "cc.Prefab",
-    "_name": "chess_cat",
+    "_name": "chess_lion",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_native": "",
@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "chess_cat",
+    "_name": "chess_lion",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": null,
@@ -200,7 +200,7 @@
     "value": {
       "__type__": "cc.Vec3",
       "x": -2.64,
-      "y": 34.872,
+      "y": 34.729,
       "z": 0
     }
   },
@@ -286,7 +286,7 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "24237097-292c-448d-baad-ec02a9934faa@f9941",
+      "__uuid__": "49b0bbe2-1202-42b3-9be7-318f728a51a3@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 0,
@@ -401,7 +401,7 @@
     "fileId": "aeB7E4xrdOk6BtRpngQZsk"
   },
   {
-    "__type__": "de85fNAH/ZOHrVjs8wGDey3",
+    "__type__": "65786IHUS5B4LStrdDqGwBP",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -412,16 +412,16 @@
     "__prefab": {
       "__id__": 23
     },
-    "chessName": "小猫",
-    "cost": 2,
-    "HP": 100,
+    "chessName": "小狮子",
+    "cost": 5,
+    "HP": 1000,
     "MP": 30,
-    "ATK": 10,
+    "ATK": 20,
     "_id": ""
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "03x6XhnclKLq/FAU7Ofdcv"
+    "fileId": "3bsm4oouBHRZumMUEz0H4e"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -433,6 +433,7 @@
     },
     "fileId": "80QI1bMYBEuqdD7VgVZj2Q",
     "instance": null,
+    "targetOverrides": null,
     "nestedPrefabInstanceRoots": [
       {
         "__id__": 3

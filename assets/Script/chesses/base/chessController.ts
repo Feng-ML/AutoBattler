@@ -7,6 +7,7 @@ import { CHESS_TYPE, EVENT_NAME_CHESS } from '../../enum/chess';
 import { GameLevelManager } from '../../runtime/GameLevelManager';
 import GameManager from '../../runtime/GameManager';
 import { EVENT_NAME_GAME_LEVEL } from '../../enum/game';
+import { shopController } from '../../UI/shop/shopController';
 
 enum CHESS_LOCATION {
     board,
@@ -44,6 +45,9 @@ export class chessController extends Component {
     enemyBoardNode: Node = null;       // 敌人棋盘
     enemyShowLayer: Node[] = null;     // 所有敌人存放地方
     enemyList: enemyInfo[] = [];       // 所有敌人分布列表
+
+    @property(Node)
+    sellBoxNode: Node = null;
 
     handleChess: chessInfo = null;       // 当前选中的棋子
     // get boardList() {
@@ -222,6 +226,7 @@ export class chessController extends Component {
             if (element.node && element.location === CHESS_LOCATION.bag) {
                 element.node.active = true
             }
+            if (element.node) element.node.getComponent(chessBase).init()
             const chessNode = element.node || instantiate(element.prefab);
 
             let cellPos
@@ -232,7 +237,6 @@ export class chessController extends Component {
                 cellPos = this.chessBoardNode.children[element.cellIndex].getWorldPosition();
                 chessNode.getComponent(chessBase).isOnBoard = true
             }
-            chessNode.getComponent(chessBase).init()
 
             // 设置棋子显示层级
             chessNode.setParent(this.chessShowLayer[element.cellIndex % 3])
@@ -276,6 +280,16 @@ export class chessController extends Component {
                         this._moveChess(CHESS_LOCATION.bag, i)
                         break;
                     }
+                }
+            }
+
+            // 判断是否出售
+            if (!inTarget) {
+                if (this._withinTarget(this.sellBoxNode, event)) {
+                    inTarget = true;
+                    this.sellBoxNode.parent.getComponent(shopController).sell(this.handleChess.node)
+                    this.chessSet.delete(this.handleChess)
+                    this._renderChess()
                 }
             }
 
