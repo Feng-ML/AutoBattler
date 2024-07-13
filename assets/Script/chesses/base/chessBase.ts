@@ -22,11 +22,11 @@ export class chessBase extends chessAttr {
     chessController: chessController = null;
 
     protected start() {
-        super.start()
         this.gameLevelManager = find('Canvas').getComponent(GameLevelManager)
         this.chessController = find('Canvas').getComponent(chessController)
         this.popupTextManager = find('Canvas').getComponent(popupTextManager)
         this.fsmManager = this.node.getComponent(chessFSM)
+        super.start()
         this._registerChessDrag()
     }
 
@@ -53,6 +53,11 @@ export class chessBase extends chessAttr {
                 this.releaseSkill()
             }
         }
+    }
+
+    init() {
+        super.init()
+        this.fsmManager.changeState(CHESS_STATE.idle)
     }
 
     // 注册棋子拖拽事件
@@ -108,7 +113,7 @@ export class chessBase extends chessAttr {
 
     die() {
         this.fsmManager.changeState(CHESS_STATE.death)
-        this.node.destroy()
+        this.node.active = false
         EventManager.emit(EVENT_NAME_CHESS.CHESS_DIE, this.node, this.chessType)
     }
 }

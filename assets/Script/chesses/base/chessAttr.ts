@@ -72,7 +72,7 @@ export class chessAttr extends Component {
         this.init()
     }
 
-    init() {
+    protected init() {
         this.currentHP = this.HP
         this.currentMP = 0
         this.attackTimer = 0

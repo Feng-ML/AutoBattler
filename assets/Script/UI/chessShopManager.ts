@@ -1,22 +1,20 @@
-import { _decorator, Component, Node, Prefab, Label, Sprite, Input, ProgressBar, EventMouse, Color } from 'cc';
+import { _decorator, Component, Node, Prefab, Label, Sprite, Input, ProgressBar, EventMouse, Color, find } from 'cc';
 const { ccclass, property } = _decorator;
 
-import { chessBase } from '../../chesses/base/chessBase';
-import { chessController } from '../../chesses/base/chessController';
-import GameManager from '../../runtime/GameManager';
-import EventManager from '../../runtime/EventManager';
-import { EVENT_NAME_CHESS } from '../../enum/chess';
-import { EVENT_NAME_PLAYER } from '../../enum/game';
+import { chessBase } from '../chesses/base/chessBase';
+import { chessController } from '../chesses/base/chessController';
+import GameManager from '../runtime/GameManager';
+import EventManager from '../runtime/EventManager';
+import { EVENT_NAME_CHESS } from '../enum/chess';
+import { EVENT_NAME_PLAYER } from '../enum/game';
 
-@ccclass('shopController')
-export class shopController extends Component {
+@ccclass('chessShopManager')
+export class chessShopManager extends Component {
 
     @property([Prefab])
     chessList1: Prefab[] = [];
 
-    @property(chessController)
     chessController: chessController = null;
-
 
     private _shopList: Prefab[] = []
     private _shopListNode: Node = null
@@ -33,6 +31,7 @@ export class shopController extends Component {
 
 
     start() {
+        this.chessController = find('Canvas').getComponent(chessController)
         this._shopListNode = this.node.getChildByName('shopList')
         this._shopBar = this.node.getChildByName('shopBar').getComponentInChildren(ProgressBar)
         this._shopExpLabel = this.node.getChildByName('shopBar').getComponentInChildren(Label)
