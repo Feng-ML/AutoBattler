@@ -205,6 +205,10 @@ export class chessController extends Component {
 
         EventManager.on(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_START, () => {
             this._renderChess()
+            // 清空敌人
+            this.enemyShowLayer.forEach((layer) => {
+                layer.removeAllChildren()
+            })
         })
 
         EventManager.on(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_RUNNING, () => {

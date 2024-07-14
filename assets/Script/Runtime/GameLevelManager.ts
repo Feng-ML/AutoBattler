@@ -2,7 +2,7 @@ import { _decorator, Component, Node, Prefab, Label, Sprite, Input, ProgressBar 
 const { ccclass, property } = _decorator;
 import { chessController, enemyInfo } from '../chesses/base/chessController';
 import EventManager from './EventManager';
-import { EVENT_NAME_GAME_LEVEL } from '../enum/game';
+import { EVENT_NAME_GAME_LEVEL, gameStartAnimationSeconds } from '../enum/game';
 
 enum GAME_LEVEL_STATE {
   LEVEL_START,
@@ -24,7 +24,7 @@ export enum GAME_LEVEL_TYPE {
 @ccclass('GameLevelManager')
 export class GameLevelManager extends Component {
   // 当前关卡
-  private _currentLevel: number = 1;
+  private _currentLevel: number = 0;
   private _state: GAME_LEVEL_STATE = GAME_LEVEL_STATE.LEVEL_START;
   gameLevelType: GAME_LEVEL_TYPE = GAME_LEVEL_TYPE.GOLD;
 
@@ -32,7 +32,7 @@ export class GameLevelManager extends Component {
   enemyList: Prefab[] = [];
 
   protected start(): void {
-    this.renderEnemy()
+    this.nextLevelSelect(GAME_LEVEL_TYPE.GOLD)
   }
 
   isRunning(): boolean {
@@ -59,9 +59,12 @@ export class GameLevelManager extends Component {
   // 下一关
   nextLevelSelect(levelType: GAME_LEVEL_TYPE) {
     this._currentLevel++;
+    this._state = GAME_LEVEL_STATE.LEVEL_START;
     this.gameLevelType = levelType;
-    this.renderEnemy()
-    EventManager.emit(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_START, this._currentLevel);
+    EventManager.emit(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_START, levelType);
+    setTimeout(() => {
+      this.renderEnemy()
+    }, gameStartAnimationSeconds * 1000);
   }
 
   // 渲染敌人

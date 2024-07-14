@@ -29,10 +29,6 @@ export class userInfo extends Component {
             this.userHpBar.progress = hp / maxHp;
         })
     }
-
-    update(deltaTime: number) {
-
-    }
 }
 
 

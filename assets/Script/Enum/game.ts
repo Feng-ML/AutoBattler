@@ -16,3 +16,6 @@ export enum EVENT_NAME_PLAYER {
   PLAYER_HP_CHANGE = "玩家血量变化",
   PLAYER_COIN_CHANGE = "玩家金币变化",
 }
+
+// 关卡开始动画时间
+export const gameStartAnimationSeconds = 1;

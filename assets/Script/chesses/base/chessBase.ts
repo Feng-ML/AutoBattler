@@ -56,8 +56,8 @@ export class chessBase extends chessAttr {
     }
 
     init() {
-        super.init()
         this.fsmManager.changeState(CHESS_STATE.idle)
+        super.init()
     }
 
     // 注册棋子拖拽事件
