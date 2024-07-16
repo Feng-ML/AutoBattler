@@ -15,7 +15,7 @@ enum GAME_LEVEL_STATE {
 // 游戏关卡类型
 export enum GAME_LEVEL_TYPE {
   RELIC = '遗物',
-  GOLD = '金币',
+  FIGHT = '战斗',
   SHOP = '商店',
   BLACKSMITH = '铁匠',
 }
@@ -26,13 +26,13 @@ export class GameLevelManager extends Component {
   // 当前关卡
   private _currentLevel: number = 0;
   private _state: GAME_LEVEL_STATE = GAME_LEVEL_STATE.LEVEL_START;
-  gameLevelType: GAME_LEVEL_TYPE = GAME_LEVEL_TYPE.GOLD;
+  gameLevelType: GAME_LEVEL_TYPE = GAME_LEVEL_TYPE.FIGHT;
 
   @property([Prefab])
   enemyList: Prefab[] = [];
 
   protected start(): void {
-    this.nextLevelSelect(GAME_LEVEL_TYPE.GOLD)
+    this.nextLevelSelect(GAME_LEVEL_TYPE.FIGHT)
   }
 
   isRunning(): boolean {
@@ -56,15 +56,22 @@ export class GameLevelManager extends Component {
     EventManager.emit(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_END, this._currentLevel);
   }
 
+  end() {
+    this._state = GAME_LEVEL_STATE.LEVEL_END;
+    EventManager.emit(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_END, this._currentLevel);
+  }
+
   // 下一关
   nextLevelSelect(levelType: GAME_LEVEL_TYPE) {
     this._currentLevel++;
     this._state = GAME_LEVEL_STATE.LEVEL_START;
     this.gameLevelType = levelType;
     EventManager.emit(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_START, levelType);
-    setTimeout(() => {
-      this.renderEnemy()
-    }, gameStartAnimationSeconds * 1000);
+    if (levelType === GAME_LEVEL_TYPE.FIGHT) {
+      setTimeout(() => {
+        this.renderEnemy()
+      }, gameStartAnimationSeconds * 1000);
+    }
   }
 
   // 渲染敌人

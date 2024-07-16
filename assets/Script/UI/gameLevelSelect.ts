@@ -26,7 +26,7 @@ export class gameLevelSelect extends Component {
             child.on(Input.EventType.TOUCH_END, () => {
                 const map = {
                     'relic': GAME_LEVEL_TYPE.RELIC,
-                    'gold': GAME_LEVEL_TYPE.GOLD,
+                    'fight': GAME_LEVEL_TYPE.FIGHT,
                     'blacksmith': GAME_LEVEL_TYPE.BLACKSMITH,
                     'shop': GAME_LEVEL_TYPE.SHOP
                 }

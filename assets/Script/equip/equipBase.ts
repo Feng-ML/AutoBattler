@@ -10,6 +10,9 @@ export class equipBase extends Component {
     // 游戏关卡管理器
     gameLevelManager: GameLevelManager = null
 
+    @property
+    cost: number = 20
+
     start() {
         this.gameLevelManager = find('Canvas').getComponent(GameLevelManager)
 
@@ -21,7 +24,7 @@ export class equipBase extends Component {
     protected _registerChessDrag() {
         this.node.on(Input.EventType.TOUCH_START, (event: EventMouse) => {
             if (this.gameLevelManager.isRunning()) return
-            EventManager.emit(EVENT_NAME_EQUIP.EQUIP_TOUCH_START, event)
+            EventManager.emit(EVENT_NAME_EQUIP.EQUIP_TOUCH_START, event, this.node)
         })
         this.node.on(Input.EventType.TOUCH_MOVE, (event: EventMouse) => {
             if (this.gameLevelManager.isRunning()) return
@@ -30,11 +33,11 @@ export class equipBase extends Component {
         })
         this.node.on(Input.EventType.TOUCH_END, (event: EventMouse) => {
             if (this.gameLevelManager.isRunning()) return
-            EventManager.emit(EVENT_NAME_EQUIP.EQUIP_TOUCH_END, event)
+            EventManager.emit(EVENT_NAME_EQUIP.EQUIP_TOUCH_END, event, this.node)
         })
         this.node.on(Input.EventType.TOUCH_CANCEL, (event: EventMouse) => {
             if (this.gameLevelManager.isRunning()) return
-            EventManager.emit(EVENT_NAME_EQUIP.EQUIP_TOUCH_END, event)
+            EventManager.emit(EVENT_NAME_EQUIP.EQUIP_TOUCH_END, event, this.node)
         })
     }
 }

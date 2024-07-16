@@ -1,4 +1,4 @@
-import { _decorator, Component, Vec3, ProgressBar, Input, EventMouse, find } from 'cc';
+import { _decorator, Vec3, ProgressBar, Input, EventMouse, find } from 'cc';
 const { ccclass, property } = _decorator;
 
 import chessFSM from './chessFSM';
@@ -7,7 +7,7 @@ import { chessAttr } from './chessAttr';
 import EventManager from '../../runtime/EventManager';
 import { GameLevelManager } from '../../runtime/GameLevelManager';
 import { chessController } from './chessController';
-import { popupTextManager, POPUP_TEXT_TYPE } from '../../UI/popupText/popupTextManager';
+import { popupTextManager, POPUP_TEXT_TYPE } from '../../UI/popupTextManager';
 
 // 棋子基类
 @ccclass('chessBase')

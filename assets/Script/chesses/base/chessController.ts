@@ -212,11 +212,11 @@ export class chessController extends Component {
         })
 
         EventManager.on(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_RUNNING, () => {
-            this.chessSet.forEach((element) => {
-                if (element.location === CHESS_LOCATION.bag) {
-                    element.node.active = false
-                }
-            });
+            this._hideBagChess()
+        })
+
+        EventManager.on(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_END, () => {
+            this._hideBagChess()
         })
     }
 
@@ -339,5 +339,14 @@ export class chessController extends Component {
         }
 
         this._renderChess()
+    }
+
+    // 隐藏背包棋子
+    private _hideBagChess() {
+        this.chessSet.forEach((element) => {
+            if (element.location === CHESS_LOCATION.bag) {
+                element.node.active = false
+            }
+        });
     }
 }
