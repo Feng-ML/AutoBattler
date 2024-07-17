@@ -8,6 +8,8 @@ import { GameLevelManager } from '../../runtime/GameLevelManager';
 import GameManager from '../../runtime/GameManager';
 import { EVENT_NAME_GAME_LEVEL } from '../../enum/game';
 import { chessShopManager } from '../../UI/chessShopManager';
+import { withinTarget } from '../../commom';
+import { equipManager } from '../../equip/equipManager';
 
 enum CHESS_LOCATION {
     board,
@@ -35,6 +37,7 @@ export interface enemyInfo {
 export class chessController extends Component {
 
     gameLevelManager: GameLevelManager = null;
+    equipManager: equipManager = null;
     @property(Node)
     chessBoardNode: Node = null;    // 棋盘
     @property(Node)
@@ -65,6 +68,7 @@ export class chessController extends Component {
         this.chessShowLayer = this.node.getChildByName("ChessList").children;
         this.enemyShowLayer = this.node.getChildByName("EnemyList").children;
         this.gameLevelManager = find('Canvas').getComponent(GameLevelManager)
+        this.equipManager = find('Canvas').getComponent(equipManager)
 
         this._init()
         this._renderChess()
@@ -259,13 +263,13 @@ export class chessController extends Component {
         })
         // 松手后
         EventManager.on(EVENT_NAME_CHESS.CHESS_TOUCH_END, (event: EventMouse) => {
+            if (!this.handleChess) return
             let inTarget = false;
-
             // 判断是否在棋盘上
             const cellList = this.chessBoardNode.children;
             for (let i = 0; i < cellList.length; i++) {
                 const cellItem = cellList[i];
-                if (this._withinTarget(cellItem, event)) {
+                if (withinTarget(cellItem, event)) {
                     // 移到对应格子上
                     inTarget = true;
                     this._moveChess(CHESS_LOCATION.board, i)
@@ -278,7 +282,7 @@ export class chessController extends Component {
                 const bagList = this.bagNode.children;
                 for (let i = 0; i < bagList.length; i++) {
                     const bagItem = bagList[i];
-                    if (this._withinTarget(bagItem, event)) {
+                    if (withinTarget(bagItem, event)) {
                         // 移到对应格子上
                         inTarget = true;
                         this._moveChess(CHESS_LOCATION.bag, i)
@@ -289,9 +293,18 @@ export class chessController extends Component {
 
             // 判断是否出售
             if (!inTarget) {
-                if (this._withinTarget(this.sellBoxNode, event)) {
+                if (withinTarget(this.sellBoxNode, event)) {
                     inTarget = true;
                     this.sellBoxNode.parent.getComponent(chessShopManager).sell(this.handleChess.node)
+
+                    // 装备返回背包
+                    const equipList = this.handleChess.node.getChildByPath('UI/equipList').children;
+                    equipList.forEach(e => {
+                        if (e.children.length > 0) {
+                            e.children[0].setParent(this.equipManager.equipListNode)
+                        }
+                    });
+
                     this.chessSet.delete(this.handleChess)
                     this._renderChess()
                 }
@@ -303,17 +316,6 @@ export class chessController extends Component {
             }
             this.handleChess = null;
         })
-    }
-
-    // 判断触摸事件是否在槽位里
-    private _withinTarget(targetNode: Node, touchEvent: EventMouse): boolean {
-        const uiTransform = targetNode.getComponent(UITransform);
-        const rect = uiTransform.getBoundingBox();  // 获取格子框
-
-        const location = touchEvent.getUILocation();    // 触摸事件世界坐标
-        const relativePoint = targetNode.parent.getComponent(UITransform).convertToNodeSpaceAR(new Vec3(location.x, location.y));     // 转相对坐标
-
-        return rect.contains(new Vec2(relativePoint.x, relativePoint.y))
     }
 
     // 获取指定格子的棋子

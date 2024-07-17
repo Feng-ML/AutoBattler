@@ -21,12 +21,14 @@ export class equipManager extends Component {
 
 
     addEquip(equipPrefab: Prefab) {
-        let equipInfo = {
+        const equipInfo = {
             prefab: equipPrefab,
             node: null
         }
+        const equipNode = instantiate(equipPrefab);
+        equipInfo.node = equipNode;
         this.equipSet.add(equipInfo)
-        this.renderEquip()
+        this.equipListNode.addChild(equipNode)
     }
 
     renderEquip() {
