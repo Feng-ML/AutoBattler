@@ -38,6 +38,15 @@ export class equipManager extends Component {
             this.equipListNode.addChild(equipNode)
         })
     }
+
+    removeEquip(equipNode: Node) {
+        this.equipSet.forEach((element) => {
+            if (element.node === equipNode) {
+                this.equipSet.delete(element)
+                equipNode.destroy()
+            }
+        })
+    }
 }
 
 

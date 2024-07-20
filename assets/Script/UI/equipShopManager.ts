@@ -6,6 +6,8 @@ import { equipManager } from '../equip/equipManager';
 import GameManager from '../runtime/GameManager';
 import EventManager from '../runtime/EventManager';
 import { EVENT_NAME_GAME_LEVEL } from '../enum/game';
+import { EVENT_NAME_EQUIP } from '../enum/equip';
+import { withinTarget } from '../commom';
 
 @ccclass('equipShopManager')
 export class equipShopManager extends Component {
@@ -16,11 +18,18 @@ export class equipShopManager extends Component {
     @property(Node)
     shopListNode: Node = null
 
+    @property(Node)
+    sellBoxNode: Node = null
+
+    @property(Node)
+    sellCostNode: Node = null
+
     private equipManager: equipManager = null
     private shopList: Prefab[] = []
 
     start() {
         this.equipManager = find('Canvas').getComponent(equipManager)
+        this.sellCostNode.active = false
 
         this.init()
         this.loadShopItem()
@@ -65,6 +74,19 @@ export class equipShopManager extends Component {
 
         EventManager.on(EVENT_NAME_GAME_LEVEL.GAME_LEVEL_START, () => {
             this.loadShopItem()
+        })
+
+        EventManager.on(EVENT_NAME_EQUIP.EQUIP_TOUCH_START, (event: EventMouse, equipNode: Node) => {
+            this.sellCostNode.active = true
+            this.sellCostNode.getComponentInChildren(Label).string = equipNode.getComponent(equipBase).cost.toString()
+        })
+
+        EventManager.on(EVENT_NAME_EQUIP.EQUIP_TOUCH_END, (event: EventMouse, equipNode: Node) => {
+            if (withinTarget(this.sellBoxNode, event)) {
+                GameManager.coinChange(equipNode.getComponent(equipBase).cost)
+                this.equipManager.removeEquip(equipNode)
+            }
+            this.sellCostNode.active = false
         })
     }
 }

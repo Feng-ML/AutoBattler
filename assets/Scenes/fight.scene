@@ -223,7 +223,7 @@
     "_priority": 0,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 463.35790335790335,
+    "_orthoHeight": 462.8337428337428,
     "_near": 0,
     "_far": 1000,
     "_color": {
@@ -5394,6 +5394,12 @@
     ],
     "shopListNode": {
       "__id__": 208
+    },
+    "sellBoxNode": {
+      "__id__": 260
+    },
+    "sellCostNode": {
+      "__id__": 267
     },
     "_id": "69LHrl4C5EAIait+0D6S/d"
   },
